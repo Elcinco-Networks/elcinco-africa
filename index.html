@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Elcinco Africa | The Digital Foundry</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="public/images/logos/favicon.svg">
+
+    <style>
+        /* --- AVANT-GARDE THEME ENGINE --- */
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --bg-glass: rgba(255, 255, 255, 0.02);
+            --bg-card: rgba(20, 20, 20, 0.6);
+            --text-main: #ECECEC;
+            --text-muted: #888;
+            --accent: #FFC000; /* Electric Gold */
+            --accent-dim: rgba(255, 192, 0, 0.1);
+            
+            /* TYPE */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+
+            /* UTILS */
+            --border-tech: 1px solid rgba(255, 255, 255, 0.1);
+            --radius-tech: 4px;
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-speed: 0.3s;
+        }
+
+        /* --- GLOBAL ATMOSPHERE --- */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            /* PRELOADER LOCK: Prevent scroll initially */
+            overflow: hidden; 
+        }
+
+        body.loaded {
+            overflow: auto;
+            overflow-x: hidden;
+        }
+
+        body.menu-open {
+            overflow: hidden; /* Prevents background scrolling when menu is open */
+        }
+
+        /* --- PRELOADER STYLES (UPDATED: ETHEREAL) --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Deep Radial Gradient for Ethereal feel */
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s var(--easing);
+        }
+
+        .loader-text {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 2rem;
+            opacity: 0;
+            /* Added Glow */
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s forwards 0.2s;
+        }
+
+        .loader-track {
+            width: 300px;
+            max-width: 80%;
+            height: 1px; /* Thinner for elegance */
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: visible; /* Allow glow to spill */
+        }
+
+        .loader-bar {
+            height: 100%;
+            width: 0%;
+            background: #fff; /* White bar for contrast */
+            position: absolute;
+            left: 0; top: 0;
+            transition: width 0.05s linear;
+            /* Glowing Bar */
+            box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+        }
+
+        .loader-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .loader-pct {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            font-weight: 700;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Initializing text removed */
+
+        #enter-btn {
+            margin-top: 3rem;
+            padding: 1rem 3rem;
+            background: rgba(255, 255, 255, 0.03); /* Glassy background */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s var(--easing);
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        #enter-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-dim);
+        }
+
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* Film Grain Overlay - UPDATED Z-INDEX */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            /* High Z-Index to sit ON TOP of preloader */
+            z-index: 100000;
+            opacity: 0.07; /* Slight increase for visibility */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Ambient Light Orbs */
+        .ambient-light { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.4; }
+        .orb-1 { top: -20%; left: -10%; width: 70vw; height: 70vw; background: radial-gradient(circle, #1a1a1a 0%, transparent 60%); }
+        .orb-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-dim) 0%, transparent 60%); }
+
+        a { color: inherit; text-decoration: none; transition: color var(--transition-speed); cursor: pointer; }
+        a:hover { color: var(--accent); }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background-color: rgba(5, 5, 5, 0.9); /* Slightly darker for better contrast */
+            backdrop-filter: blur(10px);
+            border-bottom: var(--border-tech);
+            padding: 1.5rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.0rem;
+            color: var(--accent);
+            text-transform: lowercase;
+            letter-spacing: -1px;
+        }
+
+        nav.desktop-nav { display: flex; gap: 2rem; }
+        nav.desktop-nav a {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        nav.desktop-nav a.active { color: var(--accent); }
+        nav.desktop-nav a:hover { color: var(--accent); }
+
+        /* --- HAMBURGER MENU (Hidden by default on Desktop) --- */
+        .menu-button { 
+            display: none; /* Hidden on desktop */
+            background: none; 
+            border: none; 
+            color: #fff; 
+            font-size: 2rem; 
+            cursor: pointer; 
+            padding: 0;
+            line-height: 1;
+            z-index: 2001;
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--bg-deep); 
+            z-index: 2000; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            padding: 2rem;
+        }
+        .mobile-nav-overlay.open { display: flex; }
+        
+        /* Menu Items Animation */
+        .mobile-nav-overlay a { 
+            font-family: var(--font-display); 
+            font-size: 2rem; 
+            margin: 1rem 0; 
+            color: #fff; 
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.4s forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Staggered animation delays */
+        .mobile-nav-overlay a:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-nav-overlay a:nth-child(2) { animation-delay: 0.2s; }
+        .mobile-nav-overlay a:nth-child(3) { animation-delay: 0.3s; }
+        .mobile-nav-overlay a:nth-child(4) { animation-delay: 0.4s; }
+        .mobile-nav-overlay a:nth-child(5) { animation-delay: 0.5s; }
+        .mobile-nav-overlay a:nth-child(6) { animation-delay: 0.6s; }
+
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 10rem 3rem 6rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            border-bottom: var(--border-tech);
+        }
+
+        .hero-content-wrapper { text-align: left; }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            /* Tuned clamp to prevent word breakage on small screens */
+            font-size: clamp(2rem, 7vw, 6rem); 
+            line-height: 0.95;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0 0 2rem 0;
+            color: #fff;
+            
+            /* FIX: Prevent automatic hyphenation and allow natural wrapping */
+            hyphens: none; 
+            -webkit-hyphens: none;
+            word-wrap: normal;
+        }
+
+        .hero h1 .highlight {
+            color: transparent;
+            -webkit-text-stroke: 1px #fff;
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            border-left: 2px solid var(--accent);
+            padding-left: 1.5rem;
+        }
+
+        .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem; }
+
+        .btn-secondary {
+            display: inline-block; padding: 1rem 3rem;
+            border: 1px solid #fff; color: #fff;
+            text-transform: uppercase; text-decoration: none; letter-spacing: 1px;
+            transition: 0.3s; font-family: var(--font-display); font-weight: 700;
+            text-align: center;
+        }
+        .btn-secondary:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        /* Stats */
+        .stats {
+            display: flex; gap: 4rem; padding-top: 2rem; border-top: var(--border-tech);
+        }
+        .stat .number { font-family: var(--font-display); font-size: 3rem; color: var(--accent); line-height: 1; }
+        .stat .label { font-size: 0.8rem; text-transform: uppercase; color: #666; letter-spacing: 1px; margin-top: 0.5rem; }
+
+        /* --- DIAGRAM CONTAINER --- */
+        .diagram-container {
+            border: 1px dashed #444;
+            background: rgba(255,255,255,0.02);
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        .diag-label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; display: block; margin-top: 1rem; font-family: var(--font-body);}
+
+        /* --- SECTIONS --- */
+        .section { padding: 6rem 3rem; max-width: 1600px; margin: 0 auto; border-bottom: var(--border-tech); }
+        
+        .section-header { margin-bottom: 4rem; text-align: left; }
+        .section-header small { color: var(--accent); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 1rem; font-family: var(--font-body); }
+        
+        .section-header h2 { 
+            font-family: var(--font-display); 
+            font-size: clamp(2rem, 5vw, 3.5rem); 
+            margin: 0; 
+            color: #fff; 
+            line-height: 1; 
+        }
+        
+        .section-header p { color: var(--text-muted); max-width: 500px; margin-top: 1rem; }
+        
+        .btn-view-all { 
+            color: var(--accent); font-family: var(--font-display); font-weight: 700; 
+            border: 1px solid var(--accent); padding: 0.5rem 1.5rem; margin-top: 1rem;
+            display: inline-block;
+        }
+        .btn-view-all:hover { background: var(--accent); color: #000; }
+
+        /* --- SERVICES GRID --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px; 
+            background: #333; 
+            border: 1px solid #333;
+        }
+
+        .service-card {
+            background: var(--bg-deep);
+            padding: 3rem;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: flex; flex-direction: column; height: 100%;
+            border: none !important;
+            cursor: pointer;
+        }
+
+        .service-card:hover { background: #0f0f0f; }
+        .service-card:hover .service-title { color: var(--accent) !important; }
+
+        .service-title { font-family: var(--font-display); font-size: 1.5rem; color: #fff !important; margin: 0 0 1rem 0; }
+        .service-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1; }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; }
+        .tag { font-size: 0.7rem; color: #666; border: 1px solid #333; padding: 0.2rem 0.6rem; text-transform: uppercase; border-radius: 100px; background: transparent; }
+
+        /* --- CASE STUDIES --- */
+        .case-studies {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 0; border: 1px solid #333; margin-top: 3rem;
+        }
+
+        .case-study-card {
+            position: relative; aspect-ratio: 16/9; overflow: hidden;
+            border-bottom: 1px solid #333; border-right: 1px solid #333;
+            background: #000; box-shadow: none; border-radius: 0;
+            cursor: pointer;
+        }
+
+        .case-study-image {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s var(--easing);
+            opacity: 0.6; filter: grayscale(100%);
+        }
+
+        .case-study-content {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 2rem;
+            background: linear-gradient(0deg, #000 0%, transparent 100%);
+            z-index: 2;
+        }
+
+        .case-study-card:hover .case-study-image { transform: scale(1.05); opacity: 0.4; filter: grayscale(0%); }
+        .case-study-card:hover .case-study-title { color: var(--accent); }
+
+        .case-study-category { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .case-study-title { font-family: var(--font-display); font-size: 2rem; color: #fff; margin: 0; }
+        .case-study-desc { display: none; }
+        .case-study-link { margin-top: 1rem; color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: block; }
+
+        /* --- PRICING --- */
+        .service-card div:nth-child(2) div {
+            font-family: var(--font-display);
+            font-size: 2.5rem !important; 
+            color: #fff !important; 
+            margin: 1rem 0;
+        }
+        .service-card hr { border-top: 1px solid #333 !important; }
+        .service-card ul li {
+            color: #aaa; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-family: var(--font-body);
+        }
+        .service-card ul li span { color: var(--accent) !important; margin-right: 10px; }
+
+        .btn-primary {
+            display: block; width: 100%; text-align: center;
+            padding: 1rem; background: var(--accent); color: #000;
+            text-transform: uppercase; font-weight: bold; border: none;
+            margin-top: 2rem; transition: 0.3s; font-family: var(--font-display);
+            border-radius: 0; text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover { filter: brightness(1.1); }
+        .service-card .btn-primary:hover {
+            background-color: #fff !important;
+            color: #000 !important;
+            border-color: #fff !important;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 4rem 3rem; margin-top: 4rem;
+            background: #080808; border-top: var(--border-tech);
+            border-radius: 0; margin: 0; max-width: 100%;
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        .footer-watermark {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-display);
+            font-size: clamp(6rem, 20vw, 25rem); 
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            line-height: 0.8;
+            user-select: none;
+        }
+
+        .footer-content-wrapper { position: relative; z-index: 1; }
+        .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-top: 3rem;}
+        .footer-links h4 { color: var(--accent); margin-bottom: 1.5rem; font-family: var(--font-display); text-transform: uppercase; font-size: 1.2rem;}
+        .footer-links ul li { margin-bottom: 0.8rem; }
+        .footer-links a { color: #666; transition: color 0.3s; }
+        .footer-links a:hover { color: #fff; }
+        
+        .newsletter input { background: #111; border: 1px solid #333; color: #fff; padding: 1rem; border-radius: 0; width: 100%; box-sizing: border-box;}
+        .newsletter button { border-radius: 0; padding: 1rem; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 1px; cursor: pointer;}
+
+        .footer-bottom { margin-top: 4rem; text-align: center; color: #444; font-size: 0.8rem; border-top: 1px solid #222; padding-top: 2rem; position: relative; z-index: 1;}
+
+        /* --- RESPONSIVE OPTIMIZATION --- */
+        @media (max-width: 900px) {
+            header { padding: 1.5rem 1.25rem; }
+            
+            nav.desktop-nav { display: none; } 
+            
+            .menu-button { display: block; }
+            
+            .hero { padding: 8rem 1.25rem 4rem 1.25rem; }
+            
+            .hero h1 { 
+                font-size: clamp(1.35rem, 7vw, 3.2rem); 
+                line-height: 1.1;
+                overflow-wrap: normal;
+                word-break: normal;
+                hyphens: none; 
+                letter-spacing: -0.5px; 
+            }
+
+            .section { padding: 4rem 1.25rem; }
+            .section-header { margin-bottom: 2.5rem; }
+            
+            .stats { flex-direction: column; gap: 2rem; border-top: 1px solid #333; padding-top: 2rem;}
+            
+            .services-grid { grid-template-columns: 1fr; }
+            .case-studies { grid-template-columns: 1fr; }
+            .service-card { padding: 2rem 1.5rem; }
+            .footer { padding: 3rem 1.25rem; }
+            
+            .btn-secondary { width: 100%; margin-bottom: 0.5rem; }
+            
+            #close-menu { font-size: 3rem; margin-top: 2rem; }
+        }
+    </style>
+</head>
+
+<body class="t-dark">
+    
+    <div id="preloader">
+        <div class="loader-text">Habari yako!</div>
+        <div class="loader-track">
+            <div class="loader-bar" id="loader-bar"></div>
+        </div>
+        <div class="loader-info">
+            <div class="loader-pct" id="loader-pct">0%</div>
+            </div>
+
+        <button id="enter-btn">Karibu Elcinco Africa</button>
+    </div>
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <div class="logo-text"><span style="color:#d8e70a">elcinco</span><span style="color:#fff">africa</span></div>
+        </div>
+        
+        <div style="display: flex; align-items: center;">
+            <nav class="desktop-nav">
+                <a href="index.html" class="active">Home</a>
+                <a href="src/pages/careers.html">Careers</a>
+                <a href="src/pages/about.html">About</a>
+                <a href="src/pages/contact.html">Contact</a>
+            </nav>
+            <button class="menu-button" id="menu-toggle" aria-label="Open navigation menu">☰</button>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobile-menu">
+        <a href="index.html" class="active">Home</a>
+        <a href="src/pages/careers.html">Careers</a>
+        <a href="src/pages/about.html">About</a>
+        <a href="src/pages/contact.html">Contact</a>
+        <button class="menu-button" style="color: var(--accent); margin-top: 3rem;" id="close-menu">✕</button>
+    </div>
+
+    <main>
+        <section class="hero" aria-label="Digital Agency Hero">
+            <div class="hero-content-wrapper">
+                <h1>Creative Department For The <span class="highlight">New Africa</span></h1>
+                <p>We are a collective of Kenyan creatives, designers, developers, and strategists building world-class digital experiences for futuristic African brands. From Nairobi to Lagos, Johannesburg to Cairo, we partner with businesses seeking impact, growth, and relevance not just a digital presence.</p>
+                
+                <div class="btn-group">
+                    <a href="src/pages/project.html" class="btn-secondary" aria-label="Start Project">Start Project →</a>
+                    <a href="src/pages/contact.html" class="btn-secondary" style="border-color: #333; color: #aaa;" aria-label="Get Quote">Get Quote</a>
+                </div>
+
+                <div class="stats" role="list">
+                    <div class="stat" role="listitem">
+                        <div class="number">2+</div>
+                        <div class="label">Projects Delivered</div>
+                    </div>
+                    <div class="stat" role="listitem">
+                        <div class="number">1</div>
+                        <div class="label">African Countries</div>
+                    </div>
+                    <div class="stat" role="listitem">
+                        <div class="number">98%</div>
+                        <div class="label">Client Retention</div>
+                    </div>
+                    <div class="stat" role="listitem">
+                        <div class="number">24/7</div>
+                        <div class="label">Support</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="services-title">
+            <div class="section-header">
+                <small>CAPABILITIES</small>
+                <h2 id="services-title">Services That <span class="highlight">Transform</span></h2>
+                <p>End-to-end digital solutions tailored for African businesses ready to compete globally.</p>
+            </div>
+
+
+            <div class="services-grid">
+                
+                <a href="src/pages/aiauto.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">AI Automation</h3>
+                    <p class="service-desc">Automating business workflows using AI to save time, reduce costs, and improve efficiency.</p>
+                    <div class="tags"><span class="tag">Chatbots</span><span class="tag">Workflows</span></div>
+                </a>
+
+                <a href="src/pages/webdev.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">Web Development</h3>
+                    <p class="service-desc">High-performance websites and web apps built with modern tech. Fast, secure, and scalable.</p>
+                    <div class="tags"><span class="tag">React</span><span class="tag">Next.js</span></div>
+                </a>
+
+                <a href="src/pages/mobile.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">Mobile Apps</h3>
+                    <p class="service-desc">Native and cross-platform apps that solve real African problems. Built for scale.</p>
+                    <div class="tags"><span class="tag">iOS</span><span class="tag">Android</span></div>
+                </a>
+
+                <a href="src/pages/digital.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">Digital Marketing</h3>
+                    <p class="service-desc">Data-driven campaigns that convert. SEO, social media, and performance marketing.</p>
+                    <div class="tags"><span class="tag">SEO</span><span class="tag">Ads</span></div>
+                </a>
+
+                <a href="src/pages/uiux.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">UI/UX Design</h3>
+                    <p class="service-desc">User-centered design that delights. We create interfaces that users love and businesses trust.</p>
+                    <div class="tags"><span class="tag">Research</span><span class="tag">Design Systems</span></div>
+                </a>
+
+                <a href="src/pages/growth.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">Growth Strategy</h3>
+                    <p class="service-desc">Strategic consulting for startups and enterprises. From MVP to market leader.</p>
+                    <div class="tags"><span class="tag">Consulting</span><span class="tag">Optimization</span></div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="case-studies-title" style="padding: 0; border-bottom: none;">
+            <div class="section-header" style="padding: 6rem 1.25rem 2rem 1.25rem;">
+                <small>CASE STUDIES</small>
+                <h2 id="case-studies-title">Work That <span class="highlight">Speaks</span></h2>
+                <a href="#case-studies-title" class="btn-view-all">View All Work →</a>
+            </div>
+            <div class="case-studies">
+                <article class="case-study-card" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" alt="Care Giving" class="case-study-image" />
+                    <div class="case-study-content">
+                        <div class="case-study-category">Organisation Website</div>
+                        <h3 class="case-study-title">Care Giving</h3>
+                        <a href="https://rnlillycares.org" target="_blank" rel="noopener noreferrer" class="case-study-link">View Case Study →</a>
+                    </div>
+                </article>
+
+                <article class="case-study-card" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1496368077930-c1e31b4e5b44?w=800&q=80" alt="Security Solutions" class="case-study-image" />
+                    <div class="case-study-content">
+                        <div class="case-study-category">Corporate Platform</div>
+                        <h3 class="case-study-title">Security Solutions</h3>
+                        <a href="https://gallatekea.com" target="_blank" rel="noopener noreferrer" class="case-study-link">View Case Study →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="pricing-title">
+            <div class="section-header">
+                <small> WEB</small>
+                <h2 id="pricing-title">Web <span class="highlight">Development</span></h2>
+            </div>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div style="position:absolute; top:20px; right:20px; font-size:0.7rem; color:#666;">ENTRY</div>
+                    <h3 class="service-title" style="color:var(--text-muted) !important;">Bronze</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 40,000</div>
+                    <p class="service-desc">Starter Website for Personal Brands</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>1–3 Page Responsive Site</li>
+                        <li><span>✓</span>Mobile & Desktop Optimization</li>
+                        <li><span>✓</span>Basic SEO Setup</li>
+                        <li><span>✓</span>1 Round Revisions</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+
+                <div class="service-card">
+                    <div style="position:absolute; top:20px; right:20px; font-size:0.7rem; color:var(--accent);">POPULAR</div>
+                    <h3 class="service-title" style="color:var(--accent) !important;">Silver</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 60,000</div>
+                    <p class="service-desc">Business Website for Service Providers</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>Up to 5 Pages</li>
+                        <li><span>✓</span>Contact & WhatsApp Chat</li>
+                        <li><span>✓</span>Google Maps & Basic SEO</li>
+                        <li><span>✓</span>2 Rounds Revisions</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;"> Get Started</a>
+                </div>
+
+                <div class="service-card">
+                    <div style="position:absolute; top:20px; right:20px; font-size:0.7rem; color:#666;">PRO</div>
+                    <h3 class="service-title" style="color:var(--text-muted) !important;">Gold</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 90,000</div>
+                    <p class="service-desc">Professional Platform for Companies</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>8–10 Pages + Blog</li>
+                        <li><span>✓</span>Analytics Integration</li>
+                        <li><span>✓</span>Performance Optimization</li>
+                        <li><span>✓</span>3 Rounds Revisions</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="pricing-title-2">
+            <div class="section-header">
+                <small> GROWTH</small>
+                <h2 id="pricing-title-2">Digital <span class="highlight">Marketing</span></h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3 class="service-title" style="color:var(--text-muted) !important;">Bronze</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 15K <span style="font-size:1rem; color:#666;">/mo</span></div>
+                    <p class="service-desc">Basic Presence</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>1 Platform Managed</li>
+                        <li><span>✓</span>6 Posts/Month</li>
+                        <li><span>✓</span>Caption Writing</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Subscribe</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title" style="color:var(--text-muted) !important;">Silver</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 25K <span style="font-size:1rem; color:#666;">/mo</span></div>
+                    <p class="service-desc">Growth Package</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>2 Platforms Managed</li>
+                        <li><span>✓</span>10 Posts/Month</li>
+                        <li><span>✓</span>Engagement Monitoring</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Subscribe</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title" style="color:var(--text-muted) !important;">Gold</h3>
+                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 45K <span style="font-size:1rem; color:#666;">/mo</span></div>
+                    <p class="service-desc">Brand Growth</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>4 Platforms Managed</li>
+                        <li><span>✓</span>15 Posts/Month</li>
+                        <li><span>✓</span>Paid Ads Strategy</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Subscribe</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="pricing-title-3">
+            <div class="section-header">
+                <small> INTERFACE</small>
+                <h2 id="pricing-title-3">UI/UX <span class="highlight">Design</span></h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3 class="service-title">Bronze</h3>
+                    <div style="font-size: 2rem; color: #fff;">KES 20K</div>
+                    <p class="service-desc">Concept Design</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>User Flow Planning</li>
+                        <li><span>✓</span>Low-fi Wireframes</li>
+                        <li><span>✓</span>3-5 Screens</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title">Silver</h3>
+                    <div style="font-size: 2rem; color: #fff;">KES 45K</div>
+                    <p class="service-desc">Product Design</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>High-Fidelity UI</li>
+                        <li><span>✓</span>6-10 Screens</li>
+                        <li><span>✓</span>Clickable Prototype</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title">Gold</h3>
+                    <div style="font-size: 2rem; color: #fff;">KES 60K</div>
+                    <p class="service-desc">Complete System</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>Full Design System</li>
+                        <li><span>✓</span>12-15 Screens</li>
+                        <li><span>✓</span>Dev Handoff Assets</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="pricing-title-4">
+            <div class="section-header">
+                <small>AUTOMATION</small>
+                <h2 id="pricing-title-4">AI <span class="highlight">Automation</span></h2>
+            </div>
+
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3 class="service-title">Bronze</h3>
+                    <div style="font-size: 1.8rem; color: #fff;">KES 20-30K</div>
+                    <p class="service-desc">Basic Automation</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>1 Simple Workflow</li>
+                        <li><span>✓</span>Basic Chatbot</li>
+                        <li><span>✓</span>WhatsApp Integration</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title">Silver</h3>
+                    <div style="font-size: 1.8rem; color: #fff;">KES 45-60K</div>
+                    <p class="service-desc">Smart Automation</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>3 Automated Workflows</li>
+                        <li><span>✓</span>CRM Integration</li>
+                        <li><span>✓</span>Lead Qualification</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title">Gold</h3>
+                    <div style="font-size: 1.8rem; color: #fff;">KES 120-180K</div>
+                    <p class="service-desc">Advanced Automation</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>5+ Workflows</li>
+                        <li><span>✓</span>Trained AI Chatbot</li>
+                        <li><span>✓</span>Decision Logic & Routing</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="pricing-title-5">
+            <div class="section-header">
+                <small> MOBILE</small>
+                <h2 id="pricing-title-5">Mobile <span class="highlight">Application</span></h2>
+            </div>
+
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3 class="service-title">Bronze</h3>
+                    <div style="font-size: 2rem; color: #fff;">KES 70K</div>
+                    <p class="service-desc">Simple App</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>Android Only</li>
+                        <li><span>✓</span>Basic UI Screens</li>
+                        <li><span>✓</span>Simple Logic</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title">Silver</h3>
+                    <div style="font-size: 2rem; color: #fff;">KES 100K</div>
+                    <p class="service-desc">Functional App</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>User Authentication</li>
+                        <li><span>✓</span>API Integration</li>
+                        <li><span>✓</span>Push Notifications</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+                <div class="service-card">
+                    <h3 class="service-title">Gold</h3>
+                    <div style="font-size: 2rem; color: #fff;">KES 140K</div>
+                    <p class="service-desc">Advanced App</p>
+                    <hr>
+                    <ul>
+                        <li><span>✓</span>Payments Integration</li>
+                        <li><span>✓</span>Admin Dashboard</li>
+                        <li><span>✓</span>Full Testing</li>
+                    </ul>
+                    <a href="src/pages/project.html" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="text-align:center; padding: 8rem 2rem; border-bottom: none;">
+            <div style="font-family: var(--font-display); color: var(--accent); font-size: 1rem; margin-bottom: 1rem;">INITIATE PROJECT</div>
+            <h2 style="font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 2rem; color: #fff;">Ready to <span class="highlight">Transform?</span></h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem auto;">Whether you’re a startup founder, an enterprise, or an ambitious brand  we’re here to make your digital dreams a reality.</p>
+            <a href="src/pages/project.html" class="btn-secondary" style="background: var(--accent); color: #000; border-color: var(--accent);">Get Started With Us Today </a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-watermark">ELCINCO</div>
+        <div class="footer-content-wrapper">
+            <div class="footer-top">
+                <div class="logo-text"><span style="color:#d8e70a">elcinco</span><span style="color:#fff">africa</span></div>
+            </div>
+
+            <div class="footer-links">
+                <div>
+                    <h4> Website links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="src/pages/contact.html">Contact</a></li>
+                        <li><a href="src/pages/about.html">About</a></li>
+                        <li><a href="src/pages/careers.html">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://github.com/Elcinco-Networks" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/in/elcinco-africa/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                        <li><a href="https://x.com/ElcincoNetworks/" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+                        <li><a href="https://www.instagram.com/elcinco.africa/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">+254 799 306 258</a></li>
+                        <li><a href="#">admin@elcinco.africa</a></li>
+                    </ul>
+                    <div class="newsletter">
+                        <label for="email" style="margin-top:1rem; display:block; color:#666; font-size:0.8rem;">NEWSLETTER PROTOCOL</label>
+                        <form id="newsletter-form">
+                            <input type="email" id="email" placeholder="Your email" required>
+                            <div id="newsletter-message" class="newsletter-message"></div>
+                            <button type="submit" style="margin-top:0.5rem; width:100%;">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>&copy; 2026 Elcinco Africa. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load Email Service -->
+    <script src="src/scripts/emailService.js"></script>
+
+    <script>
+        /**
+         * ELCINCO ENGINE
+         * 1. Preloader logic (Session Aware & 0-100%)
+         * 2. Haptic Feedback Only (Audio Removed)
+         */
+        const HapticEngine = {
+            // Sound: CLICK (Haptic Only)
+            playClick: function() {
+                // Haptic: Solid tap
+                if(navigator.vibrate) navigator.vibrate(20);
+            }
+        };
+
+        // --- PRELOADER LOGIC ---
+        const preloader = document.getElementById('preloader');
+        const loaderBar = document.getElementById('loader-bar');
+        const loaderPct = document.getElementById('loader-pct');
+        const enterBtn = document.getElementById('enter-btn');
+        const body = document.body;
+
+        // Check Session Storage: Has user seen loader this session?
+        const hasVisited = sessionStorage.getItem('elcinco_visited');
+
+        if (hasVisited) {
+            // SKIP LOADER
+            preloader.style.display = 'none';
+            body.classList.add('loaded');
+        } else {
+            // RUN LOADER
+            let loadProgress = 0;
+            const loadInterval = setInterval(() => {
+                // Increment cleanly to 100
+                loadProgress += 2; 
+                
+                if (loadProgress >= 100) {
+                    loadProgress = 100;
+                    clearInterval(loadInterval);
+                    
+                    // Show "Karibu" Button when done
+                    enterBtn.style.display = 'block';
+                    // Small delay for CSS transition
+                    setTimeout(() => {
+                        enterBtn.style.opacity = '1';
+                        enterBtn.style.transform = 'translateY(0)';
+                    }, 50);
+                }
+
+                loaderBar.style.width = loadProgress + '%';
+                loaderPct.innerText = loadProgress + '%';
+            }, 30); // Speed of loading
+        }
+
+        // Enter Site Logic
+        enterBtn.addEventListener('click', () => {
+            // 1. Mark as visited in SessionStorage
+            sessionStorage.setItem('elcinco_visited', 'true');
+
+            // 2. Play Welcome Haptic
+            if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
+
+            // 3. Fade out preloader & Unlock scroll
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                body.classList.add('loaded'); // Unlocks scroll via CSS
+            }, 800);
+        });
+
+        // --- INTERACTION HANDLERS ---
+        
+        // 1. Element Interactions - HAPTICS ON BUTTONS ONLY
+        // Selector targets <button> tags and specific button classes
+        const buttonElements = document.querySelectorAll('button, .btn-primary, .btn-secondary, #enter-btn');
+        
+        buttonElements.forEach(el => {
+            el.addEventListener('click', () => HapticEngine.playClick());
+        });
+
+        // --- MOBILE MENU LOGIC ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMenu() {
+            // Menu buttons already have haptic via the buttonElements selector
+            const isOpen = mobileMenu.classList.toggle('open');
+            if (isOpen) {
+                body.classList.add('menu-open');
+            } else {
+                body.classList.remove('menu-open');
+            }
+        }
+
+        if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', toggleMenu);
+
+        if (mobileMenu) {
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('open')) toggleMenu();
+                });
+            });
+        }
+
+        // Newsletter Form
+        const newsletterForm = document.getElementById('newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                HapticEngine.playClick();
+                const emailInput = document.getElementById('email');
+                const messageBox = document.getElementById('newsletter-message');
+
+                if (emailInput.value) {
+                    try {
+                        // Send newsletter subscription via API
+                        if (typeof emailService !== 'undefined') {
+                            await emailService.sendNewsletterSubscription(emailInput.value);
+                        }
+
+                        messageBox.textContent = "✓ Subscription Successful. Check your email for confirmation.";
+                        messageBox.className = "newsletter-message success";
+                        messageBox.style.display = "block";
+                        messageBox.style.color = "#10b981";
+                        messageBox.style.marginTop = "10px";
+                        emailInput.value = "";
+                        setTimeout(() => { messageBox.style.display = "none"; }, 5000);
+                    } catch (error) {
+                        console.error('Newsletter error:', error);
+                        messageBox.textContent = "⚠ Failed to subscribe. Please try again.";
+                        messageBox.style.color = "#ef4444";
+                        messageBox.style.display = "block";
+                        setTimeout(() => { messageBox.style.display = "none"; }, 5000);
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
