@@ -1,171 +1,114 @@
-
+/**
+ * EmailService - Static site email handler using mailto: links
+ * Since this site is hosted on GitHub Pages (static only),
+ * all form submissions open the user's email client via mailto: URIs.
+ */
 class EmailService {
     constructor() {
-        // Auto-detect environment and use appropriate endpoint
-        this.apiEndpoint = this.getApiEndpoint();
         this.adminEmail = 'admin@elcinco.africa';
         this.careersEmail = 'careers@elcinco.africa';
         this.legalEmail = 'legal@elcinco.africa';
     }
 
     /**
-     * Get the appropriate API endpoint based on environment
-     * @returns {string} - API endpoint URL
-     */
-    getApiEndpoint() {
-        // Check if EmailConfig is available
-        if (typeof window !== 'undefined' && window.EmailConfig) {
-            return window.EmailConfig.getEndpoint();
-        }
-
-        // Fallback: auto-detect based on hostname
-        const isDevelopment = window.location.hostname === 'localhost' ||
-                             window.location.hostname === '127.0.0.1';
-
-        if (isDevelopment) {
-            return 'http://localhost:3000/api/send-email';
-        } else {
-            // Production endpoint - update this after deployment
-            return 'https://elcinco-email-api.vercel.app/api/send-email';
-        }
-    }
-
-    /**
-     * Send contact form email
+     * Send contact form email via mailto:
      * @param {Object} formData - Contact form data
-     * @returns {Promise} - API response
      */
-    async sendContactEmail(formData) {
-        const emailPayload = {
-            to: this.adminEmail,
-            from: 'noreply@elcinco.africa',
-            replyTo: formData.email,
-            subject: `[CONTACT] ${formData.projectType}`,
-            templateType: 'contact',
-            data: {
-                name: formData.name,
-                email: formData.email,
-                projectType: formData.projectType,
-                message: formData.message,
-                timestamp: new Date().toISOString()
-            }
-        };
+    sendContactEmail(formData) {
+        const subject = `[CONTACT] ${formData.projectType}`;
+        const body = [
+            `Name: ${formData.name}`,
+            `Email: ${formData.email}`,
+            `Project Type: ${formData.projectType}`,
+            ``,
+            `Message:`,
+            `${formData.message}`,
+            ``,
+            `---`,
+            `Sent from Elcinco Africa website`
+        ].join('\n');
 
-        return this.sendEmail(emailPayload);
+        this._openMailto(this.adminEmail, subject, body);
     }
 
     /**
-     * Send project inquiry email
+     * Send project inquiry email via mailto:
      * @param {Object} formData - Project form data
-     * @returns {Promise} - API response
      */
-    async sendProjectEmail(formData) {
-        const emailPayload = {
-            to: this.adminEmail,
-            from: 'noreply@elcinco.africa',
-            replyTo: formData.email,
-            subject: `[PROJECT INQUIRY] ${formData.org_name || formData.lead_name}`,
-            templateType: 'project',
-            data: {
-                leadName: formData.lead_name,
-                organization: formData.org_name,
-                email: formData.email,
-                phone: formData.phone,
-                services: formData.services,
-                currentStatus: formData.current_status,
-                projectSummary: formData.project_summary,
-                budget: formData.budget,
-                timeline: formData.timeline,
-                timestamp: new Date().toISOString()
-            }
-        };
+    sendProjectEmail(formData) {
+        const subject = `[PROJECT INQUIRY] ${formData.org_name || formData.lead_name}`;
+        const body = [
+            `Lead Name: ${formData.lead_name}`,
+            `Organization: ${formData.org_name}`,
+            `Email: ${formData.email}`,
+            `Phone: ${formData.phone}`,
+            `Services: ${Array.isArray(formData.services) ? formData.services.join(', ') : formData.services}`,
+            `Current Status: ${formData.current_status}`,
+            `Budget: ${formData.budget}`,
+            `Timeline: ${formData.timeline}`,
+            ``,
+            `Project Summary:`,
+            `${formData.project_summary}`,
+            ``,
+            `---`,
+            `Sent from Elcinco Africa website`
+        ].join('\n');
 
-        return this.sendEmail(emailPayload);
+        this._openMailto(this.adminEmail, subject, body);
     }
 
     /**
-     * Send career application email
+     * Send career application email via mailto:
+     * Note: Attachments (CV) must be added manually by the user in their email client.
      * @param {Object} formData - Application form data
-     * @returns {Promise} - API response
      */
-    async sendApplicationEmail(formData) {
-        const emailPayload = {
-            to: this.careersEmail,
-            from: 'noreply@elcinco.africa',
-            replyTo: formData.email,
-            subject: `[APPLICATION] ${formData.role} - ${formData.name}`,
-            templateType: 'application',
-            data: {
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                role: formData.role,
-                coverLetter: formData.message,
-                cvAttachment: formData.cvFile, // Base64 or file URL
-                timestamp: new Date().toISOString()
-            }
-        };
+    sendApplicationEmail(formData) {
+        const subject = `[APPLICATION] ${formData.role} - ${formData.name}`;
+        const body = [
+            `Name: ${formData.name}`,
+            `Email: ${formData.email}`,
+            `Phone: ${formData.phone}`,
+            `Role: ${formData.role}`,
+            ``,
+            `Cover Letter:`,
+            `${formData.message}`,
+            ``,
+            `⚠ Please attach your CV/Resume to this email before sending.`,
+            ``,
+            `---`,
+            `Sent from Elcinco Africa website`
+        ].join('\n');
 
-        return this.sendEmail(emailPayload);
+        this._openMailto(this.careersEmail, subject, body);
     }
 
     /**
-     * Send newsletter subscription email
+     * Open newsletter subscription mailto
      * @param {string} email - Subscriber email
-     * @returns {Promise} - API response
      */
-    async sendNewsletterSubscription(email) {
-        const emailPayload = {
-            to: this.adminEmail,
-            from: 'noreply@elcinco.africa',
-            subject: '[NEWSLETTER] New Subscription',
-            templateType: 'newsletter',
-            data: {
-                email: email,
-                timestamp: new Date().toISOString()
-            }
-        };
+    sendNewsletterSubscription(email) {
+        const subject = '[NEWSLETTER] New Subscription Request';
+        const body = [
+            `New newsletter subscription request:`,
+            `Email: ${email}`,
+            ``,
+            `---`,
+            `Sent from Elcinco Africa website`
+        ].join('\n');
 
-        // Also send confirmation to subscriber
-        const confirmationPayload = {
-            to: email,
-            from: 'noreply@elcinco.africa',
-            subject: 'Welcome to ELCINCO AFRICA Newsletter',
-            templateType: 'newsletter-confirmation',
-            data: {
-                timestamp: new Date().toISOString()
-            }
-        };
-
-        await this.sendEmail(emailPayload);
-        return this.sendEmail(confirmationPayload);
+        this._openMailto(this.adminEmail, subject, body);
     }
 
     /**
-     * Core email sending function
-     * @param {Object} payload - Email payload
-     * @returns {Promise} - API response
+     * Open mailto: link
+     * @param {string} to - Recipient email
+     * @param {string} subject - Email subject
+     * @param {string} body - Email body
+     * @private
      */
-    async sendEmail(payload) {
-        try {
-            const response = await fetch(this.apiEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Email sending failed');
-            }
-
-            return await response.json();
-        } catch (error) {
-            console.error('Email Service Error:', error);
-            throw error;
-        }
+    _openMailto(to, subject, body) {
+        const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoUrl;
     }
 
     /**
@@ -183,7 +126,7 @@ class EmailService {
      * @param {HTMLElement} button - Submit button
      * @param {string} text - Loading text
      */
-    setLoadingState(button, text = 'Transmitting...') {
+    setLoadingState(button, text = 'Opening email client...') {
         button.disabled = true;
         button.dataset.originalText = button.textContent;
         button.textContent = text;
@@ -219,10 +162,9 @@ class EmailService {
     /**
      * Show message to user
      * @param {string} message - Message text
-     * @param {string} type - Message type (success/error)
+     * @param {string} type - Message type (success/error/info)
      */
     showMessage(message, type = 'info') {
-        // Create or update status message element
         let statusEl = document.getElementById('email-status-message');
 
         if (!statusEl) {
@@ -249,7 +191,6 @@ class EmailService {
             ${type === 'info' ? 'background: #3b82f6; color: white;' : ''}
         `;
 
-        // Auto-remove after 5 seconds
         setTimeout(() => {
             if (statusEl) {
                 statusEl.style.animation = 'slideOut 0.3s ease-out';
@@ -261,10 +202,4 @@ class EmailService {
 
 // Export singleton instance
 const emailService = new EmailService();
-
-// For ES6 modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = emailService;
-}
-
 

@@ -349,10 +349,8 @@
     <script>
         const form = document.querySelector('.project-form');
         if (form) {
-            form.addEventListener('submit', async (e) => {
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
-
-                const submitBtn = form.querySelector('.submit-button');
 
                 // Collect form data
                 const formData = {
@@ -368,24 +366,16 @@
                     timeline: document.getElementById('timeline').value
                 };
 
-                try {
-                    emailService.setLoadingState(submitBtn, 'INITIATING PROTOCOL...');
+                // Open mailto
+                emailService.sendProjectEmail(formData);
 
-                    // Send email via API
-                    await emailService.sendProjectEmail(formData);
+                // Show success message
+                emailService.showSuccess('✓ Email client opened. Please verify and send the email.');
 
-                    // Success
-                    emailService.showSuccess('✓ PROJECT INQUIRY TRANSMITTED SUCCESSFULLY! We will contact you within 4 hours.');
-
-                    // Reset form
+                // Reset form after short delay
+                setTimeout(() => {
                     form.reset();
-                    emailService.resetButtonState(submitBtn);
-
-                } catch (error) {
-                    console.error('Project email error:', error);
-                    emailService.showError('⚠ TRANSMISSION FAILED. Please try again or contact admin@elcinco.africa');
-                    emailService.resetButtonState(submitBtn);
-                }
+                }, 1000);
             });
         }
     </script>
