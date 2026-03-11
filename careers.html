@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | Elcinco Africa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="public/images/logos/favicon.svg">
+
+    <style>
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --text-main: #ECECEC;
+            --text-muted: #888888;
+            --accent: #FFC000; /* Electric Gold */
+            --accent-dim: #997a00;
+            
+            /* TYPE */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+
+            /* UTILS */
+            --border-light: 1px solid rgba(255, 255, 255, 0.1);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- CORE FIX: BOX SIZING --- */
+        * { box-sizing: border-box; }
+
+        /* --- CORE ATMOSPHERE --- */
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Film Grain */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Ambient Orbs */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            animation: pulse 15s infinite alternate;
+        }
+
+        .orb-1 {
+            top: -20%;
+            right: -10%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, #1a1a1a 0%, transparent 60%);
+        }
+
+        .orb-2 {
+            bottom: 0%;
+            left: -20%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(255, 192, 0, 0.15) 0%, transparent 60%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.1); opacity: 0.6; }
+        }
+
+        /* --- NAV --- */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .back-link {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover { border-color: var(--accent); color: var(--accent); }
+
+        .brand-mark { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; }
+
+        /* --- HERO SECTION --- */
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12rem 3rem 6rem 3rem;
+        }
+
+        h1.display-title {
+            font-family: var(--font-display);
+            /* Desktop Default */
+            font-size: clamp(3.5rem, 9vw, 8rem);
+            line-height: 0.9;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0 0 2rem 0;
+            color: #fff;
+            letter-spacing: -0.02em;
+            word-wrap: normal;
+        }
+
+        .display-title span {
+            display: block;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+        }
+
+        .manifesto {
+            max-width: 600px;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 6rem;
+            border-left: 2px solid var(--accent);
+            padding-left: 2rem;
+        }
+
+        .manifesto strong { color: #fff; font-weight: 400; }
+
+        /* --- JOB LEDGER (LIST) --- */
+        .vacancy-section {
+            border-top: 1px solid #333;
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .job-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            align-items: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid #222;
+            transition: background 0.3s, padding-left 0.3s var(--easing);
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+
+        .job-row:hover {
+            background: var(--bg-glass);
+            padding-left: 2rem;
+        }
+
+        .job-row:hover .job-title { color: var(--accent); }
+        .job-row:hover .arrow-icon { transform: translateX(10px); color: var(--accent); }
+
+        .job-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            transition: color 0.3s;
+        }
+
+        .job-tag {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-vol {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #aaa;
+        }
+
+        .arrow-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s var(--easing), color 0.3s;
+        }
+
+        /* --- WHY US BLOCK --- */
+        .culture-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 8rem;
+            padding: 4rem;
+            background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(10,10,10,0.9));
+            border: var(--border-light);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .culture-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            line-height: 1;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .culture-text {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* --- CTA BUTTON --- */
+        .magnetic-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            padding: 1.2rem 2.5rem;
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: var(--font-body);
+            letter-spacing: 1px;
+            border-radius: 100px;
+            transition: all 0.4s var(--easing);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--text-main);
+            z-index: -1;
+            transition: width 0.4s var(--easing);
+        }
+
+        .magnetic-btn:hover {
+            color: #000;
+            border-color: #fff;
+            font-weight: 700;
+        }
+
+        .magnetic-btn:hover::before { width: 100%; }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 6rem;
+            padding: 2rem 3rem;
+            border-top: var(--border-light);
+            font-size: 0.8rem;
+            color: #444;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            /* FIX 1: Reduced padding for better text fit */
+            .hero-container { padding: 9rem 0.5rem 4rem 0.5rem; }
+            
+            /* FIX 2: Calculated safe-zone font size for 10-letter words */
+            h1.display-title { 
+                font-size: clamp(1.5rem, 8.5vw, 3.5rem); 
+                line-height: 1.1;
+                letter-spacing: -1px;
+                hyphens: none;
+                word-break: normal;
+                overflow-wrap: normal;
+                width: 100%;
+            }
+            
+            .job-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 2rem 0;
+            }
+            .arrow-icon { display: none; }
+            
+            .culture-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
+                margin-top: 4rem;
+            }
+            
+            .nav-bar { padding: 1.5rem; }
+            .manifesto { margin-bottom: 4rem; padding-left: 1rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="index.html" class="back-link">← Escape</a>
+        
+    </nav>
+
+    <div class="hero-container">
+        
+        <span class="section-label">Talent Acquisition</span>
+        <h1 class="display-title">
+            Architects<br>
+            <span>Of Change</span>
+        </h1>
+
+        <div class="manifesto">
+            <p>At Elcinco Africa, we don't just hire employees; we recruit <strong>visionaries</strong>. We are bridging the gap between raw ideation and commercial reality. If you want to build the future of African innovation, this is your forge.</p>
+        </div>
+
+        <div class="vacancy-section">
+            <span class="section-label">Current Vacancies (2)</span>
+            
+            <a href="#" data-ob-target="true" class="job-row">
+                <span data-ob="email" data-k="ce" data-wrap="jobrow" data-subj="Application: Social Media Manager" style="display:none;"></span>
+                <h3 class="job-title">Social Media Manager</h3>
+                <div class="job-tag"><span class="badge-vol">VOLUNTEER  ROLE</span></div>
+                <div class="job-tag">📍 Remote / Nairobi</div>
+                <div class="arrow-icon">→</div>
+            </a>
+
+            <a href="#" data-ob-target="true" class="job-row">
+                <span data-ob="email" data-k="ce" data-wrap="jobrow" data-subj="Application: Back-End Engineer" style="display:none;"></span>
+                <h3 class="job-title">Back-End Engineer</h3>
+                <div class="job-tag"><span class="badge-vol">VOLUNTEER  ROLE</span></div>
+                <div class="job-tag">📍 Remote / Nairobi</div>
+                <div class="arrow-icon">→</div>
+            </a>
+
+        </div>
+
+        <div class="culture-grid">
+            <div>
+                <h2 class="culture-title">Why<br>Build Here?</h2>
+                <div style="margin-top: 2rem; border: 1px solid rgba(255,255,255,0.1); padding: 2rem; border-radius: 8px; text-align: center; color: #666; font-size: 0.8rem; font-family: var(--font-body);">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;" aria-hidden="true">🌍</span>
+                    <p style="margin: 0; color: #888; line-height: 1.5;">Pan-African innovation starts here.<br>Join our team and shape the future.</p>
+                </div>
+            </div>
+            <div>
+                <p class="culture-text">
+                    We provide a unique environment where your work directly impacts the survival and success of local startups. You will have access to high-level mentorship, a network of Pan-African innovators, and the tools to turn sketches into global market solutions.
+                </p>
+                <a href="application.html" class="magnetic-btn">
+                    Submit Open Application
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <span>ELCINCO AFRICA &copy; 2026</span>
+        <span>NAIROBI, KENYA</span>
+    </footer>
+
+    <!-- Security: Contact Deobfuscation Engine -->
+    <script src="src/scripts/deobfuscate.js"></script>
+
+</body>
+</html>

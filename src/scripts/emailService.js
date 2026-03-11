@@ -5,9 +5,39 @@
  */
 class EmailService {
     constructor() {
-        this.adminEmail = 'admin@elcinco.africa';
-        this.careersEmail = 'careers@elcinco.africa';
-        this.legalEmail = 'legal@elcinco.africa';
+        // Emails are resolved lazily via getters to avoid race conditions
+        // with deobfuscate.js script load order.
+        this._adminEmail = null;
+        this._careersEmail = null;
+        this._legalEmail = null;
+    }
+
+    /**
+     * Lazily resolve email from deobfuscation engine.
+     * Guarantees window.__ec is checked at call time, not constructor time.
+     * @private
+     */
+    _resolveEmail(key) {
+        if (window.__ec && window.__ec.e) {
+            return window.__ec.e(key);
+        }
+        console.warn('EmailService: engine (window.__ec) not available. Email functionality will not work. <script> must appear before any script that instantiates EmailService.');
+        return '';
+    }
+
+    get adminEmail() {
+        if (!this._adminEmail) this._adminEmail = this._resolveEmail('ae');
+        return this._adminEmail;
+    }
+
+    get careersEmail() {
+        if (!this._careersEmail) this._careersEmail = this._resolveEmail('ce');
+        return this._careersEmail;
+    }
+
+    get legalEmail() {
+        if (!this._legalEmail) this._legalEmail = this._resolveEmail('le');
+        return this._legalEmail;
     }
 
     /**

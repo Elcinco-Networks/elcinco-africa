@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Protocol | Elcinco Africa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="public/images/logos/favicon.svg">
+
+    <style>
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --text-main: #ECECEC;
+            --text-muted: #888;
+            --accent: #FFC000;
+            
+            /* GLASS SPECS */
+            --glass-bg: rgba(20, 20, 20, 0.4);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(20px);
+            
+            /* TYPE */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+
+            /* MOTION */
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- CORE FIX: BOX SIZING --- */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Film Grain */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- BACKGROUND ORBS --- */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            will-change: transform;
+            animation: drift 20s infinite alternate;
+        }
+
+        .orb-1 {
+            top: -10%; left: -10%; width: 60vw; height: 60vw;
+            background: radial-gradient(circle, #222 0%, transparent 70%);
+        }
+
+        .orb-2 {
+            bottom: -10%; right: -10%; width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(255, 192, 0, 0.15) 0%, transparent 70%);
+            animation-delay: -5s;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+
+        /* --- NAV --- */
+        .nav-header {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .back-link {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover { border-color: #FFC000; color: #FFC000; }
+
+        .exit-link {
+            text-decoration: none;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* --- HERO --- */
+        .hero-wrap {
+            padding: 10rem 3rem 4rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1.mega-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(180deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            word-wrap: normal;
+            hyphens: none;
+        }
+
+        /* --- HYBRID GRID LAYOUT --- */
+        .grid-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem 10rem 3rem;
+        }
+
+        .form-section-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 4rem;
+            margin-bottom: 6rem;
+            align-items: start;
+        }
+
+        /* Left Rail */
+        .sticky-rail {
+            position: sticky;
+            top: 8rem;
+        }
+
+        .section-number {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            color: var(--accent);
+            opacity: 0.2;
+            line-height: 1;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Right Rail: THE GLASS CARDS */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            padding: 3.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: transform 0.4s var(--easing);
+            width: 100%; /* Ensure card takes full available width */
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 192, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* --- INPUTS --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .input-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #444;
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            padding: 1rem 0;
+            border-radius: 0;
+            transition: 0.4s var(--easing);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+            padding-left: 10px;
+        }
+
+        .input-label {
+            position: absolute;
+            left: 0;
+            top: 1.2rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: 0.4s var(--easing);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .input-field:focus ~ .input-label,
+        .input-field:not(:placeholder-shown) ~ .input-label {
+            top: -0.8rem;
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+
+        /* File Upload */
+        .upload-zone {
+            border: 1px dashed #444;
+            background: rgba(0,0,0,0.2);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: rgba(255, 192, 0, 0.05);
+        }
+
+        /* --- FOOTER BUTTON --- */
+        .footer-action {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 2rem;
+        }
+
+        .submit-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 1.5rem 4rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: 0.3s var(--easing);
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            max-width: 100%; /* Prevent button overflow */
+        }
+
+        .submit-btn:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent);
+        }
+
+        /* --- MOBILE OPTIMIZATIONS --- */
+        @media (max-width: 900px) {
+            .nav-header { padding: 1.5rem; }
+            .hero-wrap { padding: 8rem 0.5rem 4rem 0.5rem; }
+            .grid-container { padding: 0 1rem 6rem; }
+            
+            .form-section-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            h1.mega-title {
+                font-size: clamp(1.8rem, 9.5vw, 4rem);
+                letter-spacing: -1px;
+                width: 100%;
+                overflow-wrap: normal;
+            }
+
+            .sticky-rail {
+                position: relative;
+                top: 0;
+                display: flex;
+                align-items: baseline;
+                gap: 1rem;
+                border-bottom: 1px solid #333;
+                padding-bottom: 1rem;
+            }
+
+            .section-number { font-size: 3rem; margin: 0; }
+            .section-header p { display: none; }
+            
+            /* FIX: Reduce card padding on mobile */
+            .glass-card { padding: 1.5rem 1rem; }
+            
+            /* FIX: Ensure button fits */
+            .submit-btn { width: 100%; padding: 1.5rem 1rem; }
+            
+            /* FIX: Allow upload text to wrap */
+            #file-text { word-wrap: break-word; white-space: normal; }
+        }
+
+        /* --- SUCCESS OVERLAY --- */
+        .matrix-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5,5,5,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        .matrix-overlay.active { opacity: 1; pointer-events: all; }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="nav-header">
+        <a href="careers.html" class="exit-link">← Escape</a>
+    </nav>
+
+    <div class="hero-wrap">
+        <h1 class="mega-title">Application<br>Initiation</h1>
+    </div>
+
+    <form action="#" method="POST" id="career-form">
+        <div class="grid-container">
+
+            <div class="form-section-grid">
+                <div class="sticky-rail">
+                    <div class="section-header">
+                        <span class="section-number">01</span>
+                        <h2>Identity</h2>
+                        <p>Input your details</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="input-group">
+                        <input type="text" id="name" class="input-field" placeholder=" " required maxlength="100" autocomplete="name">
+                        <label for="name" class="input-label">Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="email" class="input-field" placeholder=" " required maxlength="254" autocomplete="email">
+                        <label for="email" class="input-label">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="phone" class="input-field" placeholder=" " required maxlength="20" pattern="[\+]?[0-9\s\-]{7,20}" title="Phone number should be 7-20 digits, optionally starting with +. Example: +254 799 306 258" autocomplete="tel">
+                        <label for="phone" class="input-label">Phone</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section-grid">
+                <div class="sticky-rail">
+                    <div class="section-header">
+                        <span class="section-number">02</span>
+                        <h2>Mission</h2>
+                        <p>Select your operational capacity and upload document specifications.</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="input-group">
+                        <select id="role" class="input-field" required style="cursor:pointer; color: rgb(56, 8, 133);">
+                            <option value="" disabled selected></option>
+                            <option value="dev">Back-end Engineer</option>
+                            <option value="ui">Social Media Manager</option>
+                        </select>
+                        <label for="role" class="input-label" style="top: -0.8rem; font-size: 0.7rem; color: var(--accent);">Select Role</label>
+                    </div>
+
+                    <input type="file" id="cv" hidden onchange="updateFile(this)" aria-label="Upload CV document in PDF format" accept=".pdf">
+                    <label for="cv" class="upload-zone" role="button" tabindex="0">
+                        <span style="display:block; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: #fff;" id="file-text">
+                            + UPLOAD DOCUMENT (CV)
+                        </span>
+                        <span style="display:block; color: #666; font-size: 0.8rem; margin-top: 0.5rem;">PDF Format Only</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section-grid" style="margin-bottom: 0;">
+                <div class="sticky-rail">
+                    <div class="section-header">
+                        <span class="section-number">03</span>
+                        <h2>Debrief</h2>
+                        <p>Why Elcinco? Show us where your values meet ours</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card">
+                    <div class="input-group">
+                        <textarea id="msg" class="input-field" placeholder=" " style="resize: vertical; min-height: 150px;" maxlength="5000"></textarea>
+                        <label for="msg" class="input-label">Cover Letter </label>
+                    </div>
+                    
+                    <div class="footer-action">
+                        <button type="submit" class="submit-btn">Submit Application</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <div class="matrix-overlay" id="success-screen">
+        <h2 style="font-family: var(--font-display); font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">Application Successful!</h2>
+        <p style="color: #ccc; font-size: 1.1rem;">Application received. Stand by for contact.</p>
+        <button onclick="window.location.reload()" class="submit-btn" style="margin-top: 2rem; background: transparent; border: 1px solid #fff; color: #fff; padding: 1rem 3rem;">Acknowledge</button>
+    </div>
+
+    <!-- Security: Contact Deobfuscation Engine -->
+    <script src="src/scripts/deobfuscate.js"></script>
+    <!-- Load Email Service -->
+    <script src="src/scripts/emailService.js"></script>
+
+    <script>
+        function updateFile(input) {
+            if(input.files.length > 0) {
+                const txt = document.getElementById('file-text');
+                txt.innerText = "FILE LOADED: " + input.files[0].name;
+                txt.style.color = "var(--accent)";
+            }
+        }
+
+        document.getElementById('career-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                role: document.getElementById('role').options[document.getElementById('role').selectedIndex].text,
+                message: document.getElementById('msg').value
+            };
+
+            // Open mailto (user will need to attach CV manually in email client)
+            emailService.sendApplicationEmail(formData);
+
+            // Show success screen after short delay
+            setTimeout(() => {
+                document.getElementById('success-screen').classList.add('active');
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
