@@ -401,9 +401,14 @@
                 position: relative;
                 min-width: 0;
                 padding: 2rem;
+                box-sizing: border-box;
                 background: color-mix(in srgb, var(--bg-deep, #050505) 92%, white 8%);
                 font-family: var(--font-body, var(--font-tech, 'Space Grotesk', sans-serif));
                 box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+                transition: none !important;
+            }
+            .pricing-card:hover {
+                transform: none !important;
             }
             .pricing-badge {
                 position: absolute;
@@ -734,7 +739,7 @@
             applyTheme(localStorage.getItem('elcinco_theme') || document.body.dataset.theme || 'dark');
         } else {
             const auto = autoThemeForDay();
-            applyTheme(localStorage.getItem('elcinco_theme') || auto || document.body.dataset.theme || 'dark');
+            applyTheme(auto || document.body.dataset.theme || 'dark');
         }
 
         document.querySelectorAll('[data-theme-option]').forEach(dot => {
