@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Strategy Engine | Elcinco Africa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../public/images/logos/favicon.svg">
+
+    <style>
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --bg-glass: rgba(255, 255, 255, 0.02);
+            --text-main: #ECECEC;
+            --text-muted: #888;
+            --accent: #d8e70a; /* Logo lime */
+            --accent-dim: rgba(216, 231, 10, 0.15);
+            
+            /* TYPE */
+            --font-display: 'Season MIX', 'Syne', sans-serif;
+            --font-tech: 'Space Grotesk', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+
+            /* UTILS */
+            --border-tech: 1px solid rgba(255, 255, 255, 0.15);
+            --easing: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* --- BASE --- */
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-tech);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Ambient Glow */
+        .glow-spot {
+            position: fixed;
+            top: -10%; right: -10%;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, var(--accent-dim) 0%, transparent 60%);
+            z-index: -1;
+            filter: blur(120px);
+        }
+
+        /* --- NAV --- */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            box-sizing: border-box;
+        }
+
+        .back-link {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover { border-color: var(--accent); color: var(--accent); }
+
+        .service-id { font-family: var(--font-code); font-weight: bold; color: var(--accent); letter-spacing: 1px; }
+
+        /* --- HERO --- */
+        .hero-wrap {
+            padding: 12rem 3rem 6rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            border-bottom: var(--border-tech);
+        }
+
+        h1.tech-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+            margin: 0;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            max-width: 650px;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            border-left: 2px solid var(--accent);
+            padding-left: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* --- STRATEGY GRID --- */
+        .framework-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 6rem 3rem;
+        }
+
+        .framework-card {
+            background: var(--bg-glass);
+            border: var(--border-tech);
+            padding: 3rem 2rem;
+            position: relative;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .framework-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .phase-badge {
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.2rem 0.6rem;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .framework-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: #fff;
+            margin: 0 0 1rem 0;
+        }
+
+        .framework-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .data-specs {
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .data-specs span { color: #fff; font-weight: bold; }
+
+        /* --- CTA --- */
+        .init-sequence {
+            text-align: center;
+            padding: 8rem 3rem;
+            border-top: var(--border-tech);
+        }
+
+        .btn-solid {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: #000;
+            background: var(--accent);
+            padding: 1.2rem 4rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-weight: 800;
+            box-sizing: border-box; /* Fix for button overflow */
+            width: auto;
+            max-width: 100%;
+        }
+
+        .btn-solid:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+
+        /* --- RESPONSIVE FIXES --- */
+        @media (max-width: 900px) {
+            .nav-bar { padding: 1.5rem; }
+
+            .hero-wrap { 
+                /* Remove side padding for title */
+                padding-left: 0; 
+                padding-right: 0; 
+                padding-top: 9rem;
+                padding-bottom: 4rem;
+                text-align: center;
+                overflow: hidden;
+            }
+
+            h1.tech-title { 
+                /* Fluid sizing based on viewport width */
+                font-size: 11.5vw; 
+                
+                /* Prevent breaking */
+                word-break: keep-all;
+                width: 100%;
+                display: block;
+                padding: 0 0.5rem;
+                box-sizing: border-box;
+            }
+
+            .tagline {
+                /* Add padding back to tagline */
+                padding: 0 1.5rem;
+                margin: 2rem auto 0 auto;
+                text-align: left;
+                border-left: none;
+                border-top: 2px solid var(--accent);
+                padding-top: 1rem;
+            }
+
+            .framework-grid { padding: 4rem 1.5rem; grid-template-columns: 1fr; }
+            
+            .btn-solid { width: 100%; padding: 1.2rem 1rem; }
+            .init-sequence { padding: 6rem 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glow-spot"></div>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="back-link">← Escape</a>
+    </nav>
+
+    <div class="hero-wrap">
+        <h1 class="tech-title">Growth Strategy<br>Engine</h1>
+        <p class="tagline">
+            Strategic consulting and execution paths designed to scale startups and enterprises into market leaders across Africa.
+        </p>
+    </div>
+
+    <div class="framework-grid">
+        
+        <div class="framework-card">
+            
+            <h3>Strategy Mapping & MVP</h3>
+            <p>
+                We define the Minimum Viable Product (MVP), identify high-potential growth channels, and set clear, data-informed KPIs. We build the roadmap before burning capital.
+            </p>
+            <div class="data-specs">
+                > OUTPUT: <span>Market Validation / MVP Blueprint</span>
+            </div>
+        </div>
+
+        <div class="framework-card">
+            
+            <h3>Experimentation & Opt.</h3>
+            <p>
+                We implement rapid, controlled experiments across the funnel to validate hypotheses, optimize conversion rates, and lower Customer Acquisition Cost (CAC).
+            </p>
+            
+
+            <div class="data-specs">
+                > FOCUS: <span>A/B Testing / CRO / Funnel Analysis</span>
+            </div>
+        </div>
+
+        <div class="framework-card">
+            
+            <h3>Retention & Scaling</h3>
+            <p>
+                The final phase focuses on maximizing Lifetime Value (LTV) through robust retention strategies and identifying new markets for exponential scale.
+            </p>
+
+            <div class="data-specs">
+                > METRICS: <span>LTV / Churn Reduction / Market Expansion</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="init-sequence">
+        <p style="margin-bottom: 2rem; color: #666; font-family: var(--font-code); font-size: 0.8rem;">READY FOR EXPONENTIAL SCALE?</p>
+        <a href="project.html" class="btn-solid">INITIATE CONSULTATION →</a>
+    </div>
+
+    <script src="../src/scripts/siteEffects.js"></script>
+</body>
+</html>

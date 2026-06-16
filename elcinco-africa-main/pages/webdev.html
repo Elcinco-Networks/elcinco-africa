@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Engineering | Elcinco Africa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../public/images/logos/favicon.svg">
+
+    <style>
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text-main: #ECECEC;
+            --text-muted: #666;
+            --accent: #d8e70a;
+            --accent-dim: rgba(216, 231, 10, 0.2);
+            
+            /* TYPE */
+            --font-display: 'Season MIX', 'Syne', sans-serif;
+            --font-tech: 'Space Grotesk', sans-serif;
+
+            /* UTILS */
+            --border-tech: 1px solid rgba(255, 255, 255, 0.15);
+            --easing: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* --- BASE --- */
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-tech);
+            overflow-x: hidden; 
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Tech Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* --- NAV --- */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            box-sizing: border-box;
+        }
+
+        .back-link {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover { border-color: var(--accent); color: var(--accent); }
+
+        .service-id { font-family: var(--font-tech); font-weight: bold; letter-spacing: 1px; color: var(--accent); }
+
+        /* --- HERO --- */
+        .hero-wrap {
+            padding: 10rem 3rem 4rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1.tech-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 9vw, 8rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin: 0;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.8);
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        h1.tech-title::after {
+            content: "WEB ENGINEERING";
+            position: absolute;
+            top: 4px; left: 4px;
+            color: var(--accent);
+            opacity: 0.6;
+            z-index: -1;
+            mix-blend-mode: overlay;
+        }
+
+        .tagline {
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin-top: 3rem;
+            color: var(--text-main);
+            border-left: 2px solid var(--accent);
+            padding-left: 1.5rem;
+        }
+
+        /* --- DIAGRAM CONTAINER --- */
+        .schematic-view {
+            width: 100%;
+            margin: 4rem 0 6rem 0;
+            padding: 2rem 1.5rem;
+            border: 1px dashed #444;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .schematic-label {
+            align-self: flex-start;
+            font-family: var(--font-tech);
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        /* --- PROCESS PIPELINE --- */
+        .pipeline-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem 8rem 3rem;
+        }
+
+        .pipeline-step {
+            display: grid;
+            grid-template-columns: 0.5fr 1fr 2fr;
+            border-top: var(--border-tech);
+            padding: 3rem 0;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .pipeline-step:hover {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02));
+        }
+
+        .step-num {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: #333;
+            line-height: 0.8;
+        }
+
+        .step-title {
+            font-family: var(--font-tech);
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .step-detail {
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 600px;
+        }
+
+        .tech-spec {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            display: block;
+        }
+
+        /* --- CTA --- */
+        .system-init {
+            text-align: center;
+            padding: 6rem 0;
+            border-top: var(--border-tech);
+        }
+
+        /* --- PRICING CARDS (shared fix: button sizing + visibility) --- */
+        .service-pricing { max-width: 1600px; margin: 0 auto; padding: 4rem 3rem; border-bottom: var(--border-tech); }
+        .service-pricing-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .service-pricing-kicker { color: var(--accent); font-family: var(--font-code); text-transform: uppercase; letter-spacing: 2px; font-size: 0.78rem; display: inline-block; margin-bottom: 1rem; }
+        .service-pricing-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4rem); color: #fff; margin: 0; line-height: 1; text-transform: uppercase; }
+        .service-pricing-note { color: var(--text-muted); margin: 0; max-width: 520px; line-height: 1.6; }
+
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; align-items: stretch; }
+        .pricing-card { border: 1px solid rgba(255,255,255,0.12); background: var(--bg-card); padding: 2.5rem 2rem; border-radius: 14px; display: flex; flex-direction: column; min-height: 100%; }
+.pricing-card.is-featured { border-color: rgba(255,255,255,0.12); box-shadow: none; }
+        .pricing-card { transition: none; }
+        .pricing-card h3 { font-family: var(--font-display); color: #fff; margin: 0 0 1rem 0; font-size: 1.9rem; text-transform: uppercase; }
+        .pricing-price { color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; line-height: 1.1; margin: 0 0 1.1rem; overflow-wrap:anywhere; }
+        .pricing-prefix { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-right: 0.5rem; font-family: var(--font-tech); display: inline-block; vertical-align: middle; }
+        .pricing-desc { color: #aaa; margin: 0 0 1.25rem; }
+        .pricing-card hr { width: 100%; border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 0 0 1.25rem; }
+        .pricing-card ul { padding: 0; margin: 0 0 1.5rem; list-style: none; }
+        .pricing-card ul li { color: #aaa; padding: 0.45rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: var(--font-tech); }
+        .pricing-action { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 1rem 1rem; margin-top: auto; box-sizing: border-box; background: var(--accent); color: #000; font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border-radius: 0; border: 1px solid var(--accent); }
+        .pricing-action:hover { background: transparent; color: var(--accent); }
+        .pricing-card:hover { transform: none; }
+
+        @media (max-width: 900px) {
+            .service-pricing { padding: 3rem 1.25rem; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-card { padding: 2rem 1.25rem; }
+            .pricing-action { min-height: 52px; padding: 1rem 0.75rem; }
+        }
+
+        .btn-glitch {
+            position: relative;
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: #fff;
+            padding: 1rem 3rem;
+            border: 1px solid #fff;
+            overflow: hidden;
+            transition: 0.3s;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        .btn-glitch:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 900px) {
+            .nav-bar { padding: 1.5rem; }
+
+            .hero-wrap { 
+                /* Zero padding for full width title */
+                padding: 9rem 0 4rem 0; 
+                text-align: center;
+                overflow: hidden;
+            }
+            
+            h1.tech-title { 
+                /* 9.5vw ensures "ENGINEERING" fits perfectly */
+                font-size: 9.5vw; 
+                width: 100%;
+                display: block;
+                word-break: keep-all; 
+                line-height: 1;
+                padding: 0 0.5rem;
+                box-sizing: border-box;
+            }
+
+            h1.tech-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+            
+            .tagline {
+                padding: 0 1.5rem;
+                margin: 2rem auto 0 auto;
+                text-align: left;
+                border-left: none;
+                border-top: 2px solid var(--accent);
+                padding-top: 1rem;
+            }
+
+            .pipeline-container { padding: 0 1.5rem 6rem 1.5rem; }
+            
+            .pipeline-step {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                padding: 2.5rem 0;
+            }
+            
+            .step-num { 
+                font-size: 2.5rem; 
+                margin-bottom: 0.5rem; 
+                color: var(--accent); 
+                opacity: 0.5;
+            }
+            
+            .step-title { font-size: 1.3rem; margin-bottom: 0.5rem; }
+            .schematic-view { margin: 3rem 0; padding: 1.5rem; }
+
+            /* Button Fix */
+            .system-init { padding: 4rem 1.5rem; }
+            .btn-glitch { 
+                width: 100%; 
+                padding: 1.2rem 1rem; 
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="back-link">← Escape</a>
+    </nav>
+
+    <div class="hero-wrap">
+        <h1 class="tech-title">Web<br>Engineering</h1>
+        <p class="tagline">
+            We don't just build websites; we engineer high-performance digital infrastructure tailored for the African market landscape.
+        </p>
+
+        <div class="schematic-view">
+            <span class="schematic-label">Custom Web Development Built for Performance and Scalability</span>
+            
+        </div>
+    </div>
+
+    <div class="pipeline-container">
+        
+        <div style="margin-bottom: 2rem; font-family: var(--font-tech); color: #555;">// DEPLOYMENT PROCESS</div>
+
+        <div class="pipeline-step">
+            <div class="step-num">01</div>
+            <div class="step-title">Architecture<br>& UX Protocol</div>
+            <div class="step-detail">
+                We begin by defining system architecture and designing a flawless user experience (UX). We strip away bloat to ensure the prototype is optimized for local bandwidth constraints.
+                <span class="tech-spec">:: FOCUS > Low-Latency / Mobile-First / Wireframing</span>
+            </div>
+        </div>
+
+        <div class="pipeline-step">
+            <div class="step-num">02</div>
+            <div class="step-title">Agile<br>Fabrication</div>
+            <div class="step-detail">
+                Using modern frameworks, we build the platform iteratively. We ensure seamless integration with local payment gateways (M-Pesa/Stripe) and necessary APIs.
+                <span class="tech-spec">:: STACK > React / Next.js / TypeScript / GraphQL</span>
+            </div>
+        </div>
+
+        <div class="pipeline-step">
+            <div class="step-num">03</div>
+            <div class="step-title">Optimization<br>& Launch</div>
+            <div class="step-detail">
+                Deployment on scalable cloud infrastructure. We implement rigorous stress testing, analytics tracking, and continuous delivery pipelines for peak uptime.
+                
+                <span class="tech-spec">:: CLOUD > AWS / Vercel / Docker / CI/CD</span>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="service-pricing" aria-labelledby="web-pricing-title">
+        <div class="service-pricing-header">
+            <div>
+                <span class="service-pricing-kicker">Pricing</span>
+                <h2 class="service-pricing-title" id="web-pricing-title">Web Development</h2>
+            </div>
+            <p class="service-pricing-note">Choose the build tier that matches your current stage, from lean launch pages to company-grade platforms.</p>
+        </div>
+        <div class="pricing-grid">
+            <article class="pricing-card">
+                <h3>Bronze</h3>
+                <div class="pricing-price"><span class="pricing-prefix">Starting from</span>$450</div>
+                <p class="pricing-desc">Starter Website for Personal Brands</p>
+                <hr>
+                <ul>
+                    <li><span>✓</span>1-3 Page Responsive Site</li>
+                    <li><span>✓</span>Mobile & Desktop Optimization</li>
+                    <li><span>✓</span>Basic SEO Setup</li>
+                    <li><span>✓</span>1 Round Revisions</li>
+                </ul>
+                <a href="project.html" class="pricing-action">Get Started</a>
+            </article>
+            <article class="pricing-card is-featured">
+                <h3>Silver</h3>
+                <div class="pricing-price"><span class="pricing-prefix">Starting from</span>$800</div>
+                <p class="pricing-desc">Business Website for Service Providers</p>
+                <hr>
+                <ul>
+                    <li><span>✓</span>Up to 5 Pages</li>
+                    <li><span>✓</span>Contact & WhatsApp Chat</li>
+                    <li><span>✓</span>Google Maps & Basic SEO</li>
+                    <li><span>✓</span>2 Rounds Revisions</li>
+                </ul>
+                <a href="project.html" class="pricing-action">Get Started</a>
+            </article>
+            <article class="pricing-card">
+                <h3>Gold</h3>
+                <div class="pricing-price"><span class="pricing-prefix">Starting from</span>$1,800</div>
+                <p class="pricing-desc">Professional Platform for Companies</p>
+                <hr>
+                <ul>
+                    <li><span>✓</span>8-10 Pages + Blog</li>
+                    <li><span>✓</span>Analytics Integration</li>
+                    <li><span>✓</span>Performance Optimization</li>
+                    <li><span>✓</span>3 Rounds Revisions</li>
+                </ul>
+                <a href="project.html" class="pricing-action">Get Started</a>
+            </article>
+        </div>
+    </section>
+
+    <div class="system-init">
+        <p style="margin-bottom: 2rem; color: #666; letter-spacing: 2px; font-size: 0.8rem;">READY FOR INITIALIZATION?</p>
+        <a href="project.html" class="btn-glitch">INITIATE BUILD →</a>
+    </div>
+
+    <script src="../src/scripts/siteEffects.js"></script>
+</body>
+</html>
