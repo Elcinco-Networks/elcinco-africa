@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Agency | Elcinco Africa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../public/images/logos/favicon.svg">
+
+    <style>
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --bg-glass: rgba(255, 255, 255, 0.02);
+            --text-main: #ECECEC;
+            --text-muted: #888888;
+            --accent: #d8e70a;
+            
+            /* TYPE */
+            --font-display: 'Season MIX', 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+
+            /* UTILS */
+            --border-faint: 1px solid rgba(255, 255, 255, 0.08);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- ATMOSPHERE --- */
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Film Grain */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Ambient Glow */
+        .glow-spot {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(216, 231, 10, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* --- NAV --- */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .back-link {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover { border-color: var(--accent); color: var(--accent); }
+        .back-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        .brand-mark { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: -1px;}
+
+        /* --- LAYOUT --- */
+        .main-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 10rem 3rem 6rem 3rem;
+        }
+
+        .split-header {
+            border-bottom: var(--border-faint);
+            padding-bottom: 4rem;
+            margin-bottom: 6rem;
+        }
+
+        h1.title-massive {
+            font-family: var(--font-display);
+            /* FIX 1: Responsive scaling clamp */
+            font-size: clamp(3rem, 12vw, 9rem);
+            line-height: 0.85;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+            color: #fff;
+            letter-spacing: -0.03em;
+            
+            /* FIX 2: Prevent word breaking */
+            hyphens: none;
+            word-wrap: normal;
+        }
+
+        .subtitle-floater {
+            font-size: 1.2rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* --- ASYMMETRIC GRID SECTIONS --- */
+        .narrative-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+            margin-bottom: 8rem;
+        }
+
+        .narrative-sticky {
+            position: sticky;
+            top: 8rem;
+        }
+
+        .chapter-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin: 0 0 2rem 0;
+            line-height: 1;
+        }
+
+        .body-text {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .highlight {
+            color: #fff;
+            border-bottom: 1px solid var(--accent);
+        }
+
+        /* --- GLASS CARDS --- */
+        .glass-card {
+            background: var(--bg-glass);
+            border: var(--border-faint);
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .mission-statement {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            line-height: 1.2;
+            color: #fff;
+        }
+
+        /* --- DIAGRAM CONTAINER --- */
+        .diagram-container {
+            width: 100%;
+            border: var(--border-faint);
+            padding: 1rem;
+            background: rgba(0,0,0,0.4);
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .diagram-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- CTA --- */
+        .cta-strip {
+            margin-top: 6rem;
+            border-top: var(--border-faint);
+            border-bottom: var(--border-faint);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .magnetic-btn {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .magnetic-btn:hover {
+            color: var(--accent);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .main-wrapper { padding: 8rem 1.5rem 4rem 1.5rem; }
+            .narrative-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .narrative-sticky { position: relative; top: 0; }
+            .chapter-title { font-size: 2.5rem; }
+            .nav-bar { padding: 1.5rem; }
+            
+            /* FIX 3: Smaller font for mobile to fit screen */
+            h1.title-massive { 
+                font-size: clamp(2.5rem, 10vw, 4rem); 
+                line-height: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glow-spot"></div>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="back-link">← Escape</a>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <header class="split-header">
+            <span class="subtitle-floater">The World of Elcinco Africa</span>
+            <h1 class="title-massive">About<br>Elcinco Africa</h1>
+        </header>
+
+        <div class="narrative-grid">
+            <div class="narrative-sticky">
+                <h2 class="chapter-title">The<br>Mission</h2>
+            </div>
+            <div>
+                <div class="glass-card">
+                    <p class="mission-statement">
+                        "To unlock Africa's youth innovation potential by providing support that takes ideas from <span style="color:var(--accent)">conception to market launch</span>."
+                    </p>
+                </div>
+                <p class="body-text">
+                    We believe too many transformative solutions are abandoned not because they lack merit, but because conceptualists lack the guidance to navigate the path to implementation. 
+                </p>
+            </div>
+        </div>
+
+        <div class="narrative-grid">
+            <div class="narrative-sticky">
+                <h2 class="chapter-title">The<br>Method</h2>
+            </div>
+            <div>
+                <p class="body-text">
+                    Elcinco Africa partners with <span class="highlight">young innovators</span>. We recognize that the talent in Africa is immense, but the resources required to scale are often locked behind barriers of experience and capital.
+                </p>
+                
+                <p class="body-text">
+                    We provide the mentorship, resources and technical expertise required to scale. We don't just advise; we build the bridge.
+                </p>
+
+                <div class="diagram-container">
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="narrative-grid">
+            <div class="narrative-sticky">
+                <h2 class="chapter-title">The<br>Vision</h2>
+            </div>
+            <div>
+                <p class="body-text">
+                    We envision an Africa where every young innovator has a clear roadmap to commercialize their genius. We aren't just building products; we are building the future of African industry by fostering a culture of implementation over mere ideation.
+                </p>
+            </div>
+        </div>
+
+        <div class="cta-strip">
+            <a href="contact.html" class="magnetic-btn">Shape the Future →</a>
+        </div>
+        
+        <footer style="margin-top: 3rem; font-size: 0.8rem; color: #444; display:flex; justify-content:space-between;">
+            <span>ELCINCO AFRICA &copy; 2026</span>
+            <span>EST. NAIROBI</span>
+        </footer>
+
+    </div>
+
+    <script src="../src/scripts/siteEffects.js"></script>
+</body>
+</html>

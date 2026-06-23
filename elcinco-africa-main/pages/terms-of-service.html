@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | Elcinco Africa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="../public/images/logos/favicon.svg">
+
+    <style>
+        /* --- EXACT CSS FROM CONTACT PAGE --- */
+        :root {
+            /* PALETTE */
+            --bg-deep: #050505;
+            --bg-card: rgba(20, 20, 20, 0.4);
+            --text-main: #ECECEC;
+            --text-muted: #7A7A7A;
+            --accent: #d8e70a; /* Logo lime */
+            --accent-glow: rgba(216, 231, 10, 0.3);
+            
+            /* TYPE */
+            --font-display: 'Season MIX', 'Syne', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+
+            /* SPECS */
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(24px);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* --- AMBIENT BACKGROUND & GRAIN --- */
+        body {
+            margin: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+
+        /* Film Grain Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Cinematic Glow Orbs */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: drift 20s infinite alternate;
+        }
+
+        .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #1a1a1a 0%, transparent 70%); }
+        .orb-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); animation-delay: -5s; }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            position: fixed;
+            top: 0; width: 100%; padding: 2rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; mix-blend-mode: difference;
+        }
+
+        .brand {
+            font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+            text-transform: uppercase; letter-spacing: -1px; color: #fff; text-decoration: none;
+        }
+
+        .back-link {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO SECTION --- */
+        .hero-wrap {
+            padding: 10rem 3rem 4rem 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1.mega-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 0.85;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: -0.03em;
+            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        /* --- ASYMMETRIC GRID LAYOUT --- */
+        .content-matrix {
+            display: grid;
+            grid-template-columns: 0.6fr 1.4fr; /* Adjusted for Legal Text readability */
+            gap: 6rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem 3rem 6rem 3rem;
+            align-items: start;
+        }
+
+        /* Sticky Left Column */
+        .info-rail {
+            position: sticky;
+            top: 6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        /* Legal Content Styling (Adapted from form-rail) */
+        .legal-rail {
+            position: relative;
+            margin-top: 4rem; 
+        }
+
+        .clause-block {
+            margin-bottom: 5rem;
+            border-top: 1px solid #222;
+            padding-top: 2rem;
+            transition: border-color 0.3s;
+        }
+
+        .clause-block:hover { border-color: var(--accent); }
+
+        .clause-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: #fff;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .clause-text {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .sub-clause {
+            margin-left: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        .sub-title {
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Diagram Container (Glass Style) */
+        .glass-diagram {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .diagram-caption {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- FOOTER --- */
+        .footer-strip {
+            border-top: var(--glass-border);
+            padding: 4rem 3rem;
+            margin-top: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-logo { font-family: var(--font-display); font-size: 5rem; color: #1a1a1a; line-height: 0.8; user-select: none; }
+        .footer-nav { display: flex; gap: 2rem; }
+        .footer-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .footer-nav a:hover { color: var(--accent); }
+
+        /* --- MOBILE FIXES --- */
+        @media (max-width: 900px) {
+            .nav-bar { padding: 1.5rem; }
+
+            .hero-wrap { 
+                /* Zero padding on sides to allow full width for text */
+                padding: 9rem 0 2rem 0; 
+                text-align: center;
+                overflow: hidden;
+            }
+
+            h1.mega-title { 
+                /* Fluid sizing: 12vw ensures "Terms of Service" fits */
+                font-size: 12vw; 
+                width: 100%;
+                display: block;
+                word-break: keep-all;
+                padding: 0 0.5rem;
+                box-sizing: border-box;
+            }
+
+            .subtitle {
+                padding: 0 1.5rem;
+                margin: 2rem auto 0 auto;
+            }
+
+            .content-matrix { grid-template-columns: 1fr; gap: 2rem; padding: 1rem 1.5rem; }
+            
+            .info-rail { position: relative; top: 0; margin-bottom: 2rem; }
+            .legal-rail { margin-top: 0; }
+            
+            .sub-clause { margin-left: 0; padding-left: 1rem; border-left: 2px solid #333; }
+
+            .footer-strip { flex-direction: column; align-items: flex-start; gap: 2rem; padding: 3rem 1.5rem; }
+            .footer-logo { font-size: 3rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="back-link">← Escape</a>
+    </nav>
+
+    <div class="hero-wrap">
+        <h1 class="mega-title">Terms of<br>Service</h1>
+        <p class="subtitle">Digital Operations Procedures.</p>
+    </div>
+
+    <div class="content-matrix">
+        
+        <div class="info-rail">
+            <div style="font-family: var(--font-display); color: var(--accent); font-size: 1.5rem;">
+                Key Protocols
+            </div>
+            
+            <div style="border-top: 1px solid #222; padding-top: 1rem;">
+                <span style="display:block; font-size:0.8rem; color:#666; text-transform:uppercase;">Status</span>
+                <span style="color:#fff; font-size:1.1rem;">Active / Binding</span>
+            </div>
+
+            <div style="border-top: 1px solid #222; padding-top: 1rem;">
+                <span style="display:block; font-size:0.8rem; color:#666; text-transform:uppercase;">Jurisdiction</span>
+                <span style="color:#fff; font-size:1.1rem;">Nairobi, Kenya</span>
+            </div>
+
+            <div style="border-top: 1px solid #222; padding-top: 1rem;">
+                <span style="display:block; font-size:0.8rem; color:#666; text-transform:uppercase;">Contact</span>
+                <span data-ob="email" data-k="le" data-wrap="link" data-st="color:var(--accent); text-decoration:none;">Reach us via our contact page</span>
+            </div>
+        </div>
+
+        <div class="legal-rail">
+            
+            <div class="clause-block">
+                <div style="color:var(--accent); font-family:var(--font-display); margin-bottom:0.5rem;"></div>
+                <h2 class="clause-title">General Agreement</h2>
+                <p class="clause-text">
+                    By accessing or using the services provided by Elcinco Africa , you agree to be bound by these Terms of Service (TOS). These terms constitute a legally binding agreement between you (The Client) and Elcinco Africa regarding digital design, engineering and consultation services.
+                </p>
+            </div>
+
+            <div class="clause-block">
+                <div style="color:var(--accent); font-family:var(--font-display); margin-bottom:0.5rem;"></div>
+                <h2 class="clause-title">Project Scope</h2>
+                <p class="clause-text">
+                    We do not operate on assumptions. All engagements are governed by a specific Statement of Work (SOW) that overrides these general terms in case of conflict.
+                </p>
+
+                <div class="sub-clause">
+                    <span class="sub-title">2.1 Execution Lifecycle</span>
+                    <p class="clause-text">From SOW signing to final delivery, our process follows a strict linear progression to ensure quality assurance.</p>
+                </div>
+
+                <div class="glass-diagram">
+                    
+                    <span class="diagram-caption">Clearly Defined Scope with a Linear Execution Lifecycle</span>
+                </div>
+            </div>
+
+            <div class="clause-block">
+                <div style="color:var(--accent); font-family:var(--font-display); margin-bottom:0.5rem;"></div>
+                <h2 class="clause-title">Financial Protocol</h2>
+                <p class="clause-text">
+                    <strong>Deposit:</strong> A non-refundable retainer (30-50%) initializes the workflow.<br>
+                    <strong>Net-15:</strong> Invoices are due 15 days from issuance.<br>
+                    <strong>Suspension:</strong> Accounts aged past 30 days trigger an automatic service freeze.
+                </p>
+            </div>
+
+            <div class="clause-block">
+                <div style="color:var(--accent); font-family:var(--font-display); margin-bottom:0.5rem;"></div>
+                <h2 class="clause-title">Intellectual Property</h2>
+                <p class="clause-text">
+                    Ownership is binary. Until final payment is cleared, The Agency retains all rights. Upon settlement, the "Deliverables" become your exclusive property.
+                </p>
+
+                <div class="glass-diagram">
+                    
+                    <span class="diagram-caption">Intellectual Property Ownership and Deliverables Transfer</span>
+                </div>
+            </div>
+
+            <div class="clause-block">
+                <div style="color:var(--accent); font-family:var(--font-display); margin-bottom:0.5rem;"></div>
+                <h2 class="clause-title">Termination & Liability</h2>
+                <p class="clause-text">
+                    The Client may terminate the agreement at any time by providing written notice. The Client is responsible for paying for all work completed up to that date.
+                    <br><br>
+                    <span style="color: #fff;">Limitation of Liability:</span> The Agency shall not be liable for any indirect, incidental, or consequential damages resulting from the use of our services.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer class="footer-strip">
+        <div class="footer-logo">ELCINCO</div>
+        
+        <div class="footer-nav">
+            <a href="../index.html">Home</a>
+            <a href="careers.html">Careers</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        
+        <div style="font-size: 0.8rem; color: #444;">
+            &copy; 2026 ELCINCO AFRICA.<br>ALL RIGHTS RESERVED.
+        </div>
+    </footer>
+
+    <!-- Security: Contact Deobfuscation Engine -->
+    <script src="../src/scripts/deobfuscate.js"></script>
+
+    <script src="../src/scripts/siteEffects.js"></script>
+</body>
+</html>
