@@ -24,11 +24,14 @@
             --bg-card: rgba(20, 20, 20, 0.6);
             --text-main: #ECECEC;
             --text-muted: #888;
-            --accent: #FFC000; /* Electric Gold */
-            --accent-dim: rgba(255, 192, 0, 0.1);
+            --accent: #d8e70a; /* Logo lime */
+            --accent-dim: rgba(216, 231, 10, 0.1);
+            --surface-soft: rgba(255, 255, 255, 0.05);
+            --surface-line: rgba(255, 255, 255, 0.1);
+            --theme-chip: #d8e70a;
             
             /* TYPE */
-            --font-display: 'Syne', sans-serif;
+            --font-display: 'Season MIX', 'Syne', sans-serif;
             --font-body: 'Space Grotesk', sans-serif;
 
             /* UTILS */
@@ -36,6 +39,75 @@
             --radius-tech: 4px;
             --easing: cubic-bezier(0.16, 1, 0.3, 1);
             --transition-speed: 0.3s;
+        }
+
+        body[data-theme="light"] {
+            --bg-deep: #f7f8f2;
+            --bg-glass: rgba(5, 5, 5, 0.035);
+            --bg-card: rgba(255, 255, 255, 0.76);
+            --text-main: #161712;
+            --text-muted: #575b51;
+            --accent: #667900;
+            --accent-dim: rgba(102, 121, 0, 0.14);
+            --surface-soft: rgba(0, 0, 0, 0.05);
+            --surface-line: rgba(0, 0, 0, 0.12);
+            --theme-chip: #f8faf1;
+            --border-tech: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        body[data-theme="dark"] {
+            --bg-deep: #050505;
+            --bg-glass: rgba(255, 255, 255, 0.02);
+            --bg-card: rgba(20, 20, 20, 0.6);
+            --text-main: #ECECEC;
+            --text-muted: #888;
+            --accent: #d8e70a;
+            --accent-dim: rgba(216, 231, 10, 0.1);
+            --surface-soft: rgba(255, 255, 255, 0.05);
+            --surface-line: rgba(255, 255, 255, 0.1);
+            --theme-chip: #d8e70a;
+        }
+
+        body[data-theme="beige"] {
+            --bg-deep: #e8dcc7;
+            --bg-glass: rgba(95, 72, 45, 0.07);
+            --bg-card: rgba(255, 250, 239, 0.68);
+            --text-main: #2d261d;
+            --text-muted: #6c5c49;
+            --accent: #776000;
+            --accent-dim: rgba(119, 96, 0, 0.16);
+            --surface-soft: rgba(255, 255, 255, 0.3);
+            --surface-line: rgba(74, 50, 24, 0.18);
+            --theme-chip: #d8b982;
+            --border-tech: 1px solid rgba(74, 50, 24, 0.18);
+        }
+
+        body[data-theme="burgundy"] {
+            --bg-deep: #16070d;
+            --bg-glass: rgba(255, 238, 242, 0.045);
+            --bg-card: rgba(44, 13, 26, 0.68);
+            --text-main: #fff2f4;
+            --text-muted: #c9a2ab;
+            --accent: #ffb3c3;
+            --accent-dim: rgba(255, 179, 195, 0.14);
+            --surface-soft: rgba(255, 238, 242, 0.07);
+            --surface-line: rgba(255, 238, 242, 0.14);
+            --theme-chip: #7b1738;
+            --border-tech: 1px solid rgba(255, 238, 242, 0.14);
+        }
+
+        body[data-theme="coffee"] {
+            --bg-deep: #120b07;
+            --bg-glass: rgba(245, 218, 186, 0.05);
+            --bg-card: rgba(42, 26, 17, 0.72);
+            --text-main: #f6eadc;
+            --text-muted: #b99678;
+            --accent: #d5a56b;
+            --accent-dim: rgba(213, 165, 107, 0.16);
+            --surface-soft: rgba(245, 218, 186, 0.07);
+            --surface-line: rgba(245, 218, 186, 0.14);
+            --theme-chip: #6f4427;
+            --border-tech: 1px solid rgba(245, 218, 186, 0.14);
         }
 
         /* --- GLOBAL ATMOSPHERE --- */
@@ -51,6 +123,7 @@
             width: 100%;
             /* PRELOADER LOCK: Prevent scroll initially */
             overflow: hidden; 
+            transition: background-color 0.45s var(--easing), color 0.45s var(--easing);
         }
 
         body.loaded {
@@ -62,110 +135,37 @@
             overflow: hidden; /* Prevents background scrolling when menu is open */
         }
 
-        /* --- PRELOADER STYLES (UPDATED: ETHEREAL) --- */
+        /* --- PRELOADER STYLES --- */
         #preloader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Deep Radial Gradient for Ethereal feel */
-            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            background: var(--bg-deep);
             z-index: 99999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s var(--easing);
+            padding: 2rem;
+            transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+            font-family: var(--font-display);
         }
 
-        .loader-text {
+        .loader-title {
             font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(2.2rem, 9vw, 5.8rem);
             font-weight: 800;
             color: #fff;
-            margin-bottom: 2rem;
-            opacity: 0;
-            /* Added Glow */
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-            animation: fadeIn 1s forwards 0.2s;
+            line-height: 1;
+            letter-spacing: 0;
+            margin: 0;
+            text-transform: lowercase;
+            overflow-wrap: anywhere;
+            animation: preloaderLift 0.9s var(--easing) both;
         }
 
-        .loader-track {
-            width: 300px;
-            max-width: 80%;
-            height: 1px; /* Thinner for elegance */
-            background: rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: visible; /* Allow glow to spill */
-        }
-
-        .loader-bar {
-            height: 100%;
-            width: 0%;
-            background: #fff; /* White bar for contrast */
-            position: absolute;
-            left: 0; top: 0;
-            transition: width 0.05s linear;
-            /* Glowing Bar */
-            box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
-        }
-
-        .loader-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .loader-pct {
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            color: #fff;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            font-weight: 700;
-            opacity: 0.8;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Initializing text removed */
-
-        #enter-btn {
-            margin-top: 3rem;
-            padding: 1rem 3rem;
-            background: rgba(255, 255, 255, 0.03); /* Glassy background */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s var(--easing);
-            display: none;
-            backdrop-filter: blur(5px);
-        }
-
-        #enter-btn:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-dim);
-        }
-
-        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-
-        /* Film Grain Overlay - UPDATED Z-INDEX */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            /* High Z-Index to sit ON TOP of preloader */
-            z-index: 100000;
-            opacity: 0.07; /* Slight increase for visibility */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        @keyframes preloaderLift {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Ambient Light Orbs */
@@ -177,6 +177,32 @@
         a { color: inherit; text-decoration: none; transition: color var(--transition-speed); cursor: pointer; }
         a:hover { color: var(--accent); }
         img { max-width: 100%; height: auto; display: block; }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .typewriter-live::after {
+            content: "";
+            display: inline-block;
+            width: 0.08em;
+            height: 0.9em;
+            margin-left: 0.08em;
+            background: var(--accent);
+            animation: cursorBlink 0.8s steps(1) infinite;
+            vertical-align: -0.08em;
+        }
+
+        @keyframes cursorBlink {
+            50% { opacity: 0; }
+        }
 
         /* --- HEADER & NAV --- */
         header {
@@ -212,6 +238,108 @@
         }
         nav.desktop-nav a.active { color: var(--accent); }
         nav.desktop-nav a:hover { color: var(--accent); }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .theme-switcher {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-left: 0;
+            padding: 0.35rem;
+            border: 1px solid var(--surface-line);
+            background: color-mix(in srgb, var(--bg-deep) 76%, transparent);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-radius: 999px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+        }
+
+        .theme-dot {
+            width: 1.45rem;
+            height: 1.45rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            cursor: pointer;
+            padding: 0;
+            position: relative;
+            transition: transform 0.25s var(--easing), box-shadow 0.25s var(--easing), border-color 0.25s var(--easing);
+        }
+
+        .theme-dot:hover,
+        .theme-dot.active {
+            transform: translateY(-1px) scale(1.08);
+            border-color: #fff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12), 0 0 22px var(--accent-dim);
+        }
+
+        .theme-dot[data-theme-option="light"] { background: linear-gradient(135deg, #fbfcf5, #cfd7b3); }
+        .theme-dot[data-theme-option="dark"] { background: linear-gradient(135deg, #050505, #d8e70a); }
+        .theme-dot[data-theme-option="beige"] { background: linear-gradient(135deg, #efe2c7, #b89054); }
+        .theme-dot[data-theme-option="burgundy"] { background: linear-gradient(135deg, #220912, #ff9db4); }
+        .theme-dot[data-theme-option="coffee"] { background: linear-gradient(135deg, #160c07, #c58b52); }
+        .theme-dot[data-theme-option="orange"] { background: linear-gradient(135deg, #2b0f06, #ff8a00); }
+        .theme-dot[data-theme-option="skyblue"] { background: linear-gradient(135deg, #072733, #4fc3f7); }
+
+        body:not([data-theme="dark"]) header {
+            background-color: color-mix(in srgb, var(--bg-deep) 88%, transparent);
+        }
+
+        body:not([data-theme="dark"]) nav.desktop-nav a,
+        body:not([data-theme="dark"]) .hero h1,
+        body:not([data-theme="dark"]) .section-header h2,
+        body:not([data-theme="dark"]) .service-title,
+        body:not([data-theme="dark"]) .brand-panel h3,
+        body:not([data-theme="dark"]) .brand-card h4,
+        body:not([data-theme="dark"]) .case-study-title,
+        body:not([data-theme="dark"]) .mission-panel h2,
+        body:not([data-theme="dark"]) .mission-card h3,
+        body:not([data-theme="dark"]) .mission-status strong {
+            color: var(--text-main) !important;
+        }
+
+        body:not([data-theme="dark"]) .logo-text span:last-child {
+            color: var(--text-main) !important;
+        }
+
+        body:not([data-theme="dark"]) .service-card,
+        body:not([data-theme="dark"]) .brand-console,
+        body:not([data-theme="dark"]) .brand-panel,
+        body:not([data-theme="dark"]) .brand-card,
+        body:not([data-theme="dark"]) .brand-signal span,
+        body:not([data-theme="dark"]) .case-study-card,
+        body:not([data-theme="dark"]) .mission-panel,
+        body:not([data-theme="dark"]) .mission-grid,
+        body:not([data-theme="dark"]) .mission-card {
+            background: color-mix(in srgb, var(--bg-deep) 82%, white 18%);
+        }
+
+        body:not([data-theme="dark"]) .services-grid,
+        body:not([data-theme="dark"]) .case-studies,
+        body:not([data-theme="dark"]) .mission-control {
+            background: var(--surface-line);
+            border-color: var(--surface-line);
+        }
+
+        body:not([data-theme="dark"]) .btn-secondary,
+        body:not([data-theme="dark"]) .btn-primary {
+            border-color: var(--text-main) !important;
+            color: var(--text-main) !important;
+        }
+
+        body:not([data-theme="dark"]) .btn-secondary:hover,
+        body:not([data-theme="dark"]) .btn-primary:hover {
+            color: var(--bg-deep) !important;
+            border-color: var(--accent) !important;
+        }
+
+        body:not([data-theme="dark"]) footer {
+            background: color-mix(in srgb, var(--bg-deep) 90%, black 10%);
+        }
 
         /* --- HAMBURGER MENU (Hidden by default on Desktop) --- */
         .menu-button { 
@@ -323,6 +451,129 @@
         .stat .number { font-family: var(--font-display); font-size: 3rem; color: var(--accent); line-height: 1; }
         .stat .label { font-size: 0.8rem; text-transform: uppercase; color: #666; letter-spacing: 1px; margin-top: 0.5rem; }
 
+        .mission-control {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 3rem 6rem;
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+            gap: 1px;
+            background: #333;
+            border-bottom: var(--border-tech);
+        }
+
+        .mission-panel,
+        .mission-grid {
+            background: var(--bg-deep);
+            border-top: 1px solid #333;
+        }
+
+        .mission-panel {
+            padding: 3rem;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-panel::before {
+            content: "";
+            position: absolute;
+            inset: 1.5rem;
+            border: 1px solid var(--surface-line);
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        .mission-eyebrow {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-body);
+            color: var(--accent);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.25rem;
+        }
+
+        .mission-panel h2 {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 4.4rem);
+            line-height: 0.95;
+            text-transform: uppercase;
+            color: #fff;
+            margin: 0;
+        }
+
+        .mission-status {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: #333;
+            border: 1px solid #333;
+            margin-top: 3rem;
+        }
+
+        .mission-status span {
+            display: block;
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mission-status strong {
+            display: block;
+            margin-top: 0.35rem;
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 1rem;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .mission-card {
+            min-height: 210px;
+            padding: 2rem;
+            border-left: 1px solid #333;
+            border-bottom: 1px solid #333;
+            background: linear-gradient(135deg, rgba(255,255,255,0.035), transparent 38%), var(--bg-deep);
+        }
+
+        .mission-card small {
+            display: block;
+            color: var(--accent);
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .mission-card h3 {
+            margin: 0 0 0.9rem;
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .mission-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
         /* --- DIAGRAM CONTAINER --- */
         .diagram-container {
             border: 1px dashed #444;
@@ -382,43 +633,303 @@
 
         .service-title { font-family: var(--font-display); font-size: 1.5rem; color: #fff !important; margin: 0 0 1rem 0; }
         .service-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1; }
+        .service-price {
+            width: fit-content;
+            max-width: 100%;
+            margin: 0 0 1.2rem;
+            padding: 0.45rem 0.7rem;
+            border: 1px solid var(--surface-line);
+            color: var(--accent);
+            background: var(--accent-dim);
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
 
         .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; }
         .tag { font-size: 0.7rem; color: #666; border: 1px solid #333; padding: 0.2rem 0.6rem; text-transform: uppercase; border-radius: 100px; background: transparent; }
 
-        /* --- CASE STUDIES --- */
-        .case-studies {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 0; border: 1px solid #333; margin-top: 3rem;
+        /* --- BRAND SHOWCASE --- */
+        .brand-showcase {
+            position: relative;
+            overflow: hidden;
+            padding-top: 5rem;
+            padding-bottom: 5rem;
         }
 
-        .case-study-card {
-            position: relative; aspect-ratio: 16/9; overflow: hidden;
-            border-bottom: 1px solid #333; border-right: 1px solid #333;
-            background: #000; box-shadow: none; border-radius: 0;
-            cursor: pointer;
+        .brand-showcase::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, var(--bg-deep) 0%, transparent 14%, transparent 86%, var(--bg-deep) 100%),
+                radial-gradient(circle at 18% 12%, var(--accent-dim), transparent 34%),
+                radial-gradient(circle at 85% 80%, rgba(255, 179, 195, 0.12), transparent 28%);
+            z-index: 1;
         }
 
-        .case-study-image {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s var(--easing);
-            opacity: 0.6; filter: grayscale(100%);
-        }
-
-        .case-study-content {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 2rem;
-            background: linear-gradient(0deg, #000 0%, transparent 100%);
+        .brand-showcase .section-header,
+        .brand-console {
+            position: relative;
             z-index: 2;
         }
 
-        .case-study-card:hover .case-study-image { transform: scale(1.05); opacity: 0.4; filter: grayscale(0%); }
+        .brand-console {
+            display: grid;
+            grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+            border: 1px solid var(--surface-line);
+            background: color-mix(in srgb, var(--bg-deep) 86%, white 14%);
+            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
+        }
+
+        .brand-panel {
+            padding: 2rem;
+            border-right: 1px solid var(--surface-line);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.07), transparent 52%),
+                color-mix(in srgb, var(--bg-deep) 94%, white 6%);
+        }
+
+        .brand-panel small,
+        .brand-card small {
+            display: block;
+            color: var(--accent);
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .brand-panel h3 {
+            margin: 1rem 0 1.25rem;
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 3vw, 2.55rem);
+            line-height: 0.98;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .brand-panel p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        .brand-signal {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            margin-top: 2rem;
+            background: var(--surface-line);
+            border: 1px solid var(--surface-line);
+        }
+
+        .brand-signal span {
+            min-width: 0;
+            padding: 0.9rem;
+            background: var(--bg-deep);
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .brand-signal strong {
+            display: block;
+            color: var(--text-main);
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .brand-marquee {
+            min-width: 0;
+            display: grid;
+            align-content: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            overflow: hidden;
+        }
+
+        .brand-track {
+            display: flex;
+            width: max-content;
+            gap: 1rem;
+            padding-inline: 1rem;
+            animation: brandScroll 42s linear infinite;
+        }
+
+        .brand-track:nth-child(2) {
+            animation-duration: 50s;
+            animation-direction: reverse;
+        }
+
+        .brand-marquee:hover .brand-track {
+            animation-play-state: paused;
+        }
+
+        .brand-card {
+            width: clamp(17rem, 28vw, 25rem);
+            min-height: 13rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 0 0 auto;
+            padding: 1.35rem;
+            border: 1px solid var(--surface-line);
+            border-radius: 8px;
+            background:
+                linear-gradient(145deg, rgba(255,255,255,0.08), transparent 48%),
+                color-mix(in srgb, var(--bg-deep) 90%, white 10%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        .brand-card h4 {
+            margin: 0.8rem 0 0.65rem;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            line-height: 1;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .brand-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
+        }
+
+        .brand-card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.4rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--surface-line);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .brand-card-foot i {
+            width: 0.55rem;
+            height: 0.55rem;
+            display: block;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 18px var(--accent);
+            flex: 0 0 auto;
+        }
+
+        @keyframes brandScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .brand-track {
+                width: auto;
+                flex-wrap: wrap;
+                animation: none;
+            }
+        }
+
+        /* --- CASE STUDIES --- */
+        .case-studies {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid #333;
+            margin-top: 3rem;
+        }
+
+        /* Premium DigitalOne-style project cards (image fit + alternating layout) */
+        .case-study-card {
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #333;
+            border-right: 1px solid #333;
+            background: #000;
+            box-shadow: none;
+            border-radius: 0;
+            cursor: pointer;
+            min-height: 380px;
+        }
+
+        .case-study-media {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        /* Alternating fit: left-aligned crop for odd cards, right-aligned crop for even */
+        .case-study-card:nth-child(odd) .case-study-media img {
+            object-position: 15% 50%;
+        }
+        .case-study-card:nth-child(even) .case-study-media img {
+            object-position: 85% 50%;
+        }
+
+        .case-study-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.65;
+            filter: grayscale(100%);
+            transition: transform 0.6s var(--easing), opacity 0.6s var(--easing), filter 0.6s var(--easing);
+            transform: scale(1.01);
+        }
+
+        .case-study-card:hover .case-study-media img {
+            opacity: 0.42;
+            filter: grayscale(0%);
+            transform: scale(1.06);
+        }
+
+        .case-study-content {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 2.25rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0) 100%);
+            z-index: 2;
+        }
+
         .case-study-card:hover .case-study-title { color: var(--accent); }
 
-        .case-study-category { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
-        .case-study-title { font-family: var(--font-display); font-size: 2rem; color: #fff; margin: 0; }
+        .case-study-category {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.55rem;
+        }
+        .case-study-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: #fff;
+            margin: 0;
+        }
         .case-study-desc { display: none; }
-        .case-study-link { margin-top: 1rem; color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: block; }
+        .case-study-link {
+            margin-top: 1rem;
+            color: #fff;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+
 
         /* --- PRICING --- */
         .service-card div:nth-child(2) div {
@@ -462,17 +973,17 @@
         
         .footer-watermark {
             position: absolute;
-            bottom: -30px;
+            bottom: 1.25rem;
             left: 50%;
             transform: translateX(-50%);
             font-family: var(--font-display);
-            font-size: clamp(6rem, 20vw, 25rem); 
+            font-size: clamp(4rem, 16vw, 18rem); 
             font-weight: 800;
             color: rgba(255, 255, 255, 0.03);
             white-space: nowrap;
             pointer-events: none;
             z-index: 0;
-            line-height: 0.8;
+            line-height: 1;
             user-select: none;
         }
 
@@ -483,18 +994,46 @@
         .footer-links a { color: #666; transition: color 0.3s; }
         .footer-links a:hover { color: #fff; }
         
-        .newsletter input { background: #111; border: 1px solid #333; color: #fff; padding: 1rem; border-radius: 0; width: 100%; box-sizing: border-box;}
-        .newsletter button { border-radius: 0; padding: 1rem; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 1px; cursor: pointer;}
+        .newsletter form { display: grid; gap: 0.5rem; width: 100%; }
+        .newsletter input { background: #111; border: 1px solid #333; color: #fff; padding: 1rem; border-radius: 0; width: 100%; min-width: 0; box-sizing: border-box;}
+        .newsletter button { border-radius: 0; padding: 1rem; min-height: 52px; width: 100%; border: 1px solid var(--accent); background: var(--accent); color: #000; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 1px; cursor: pointer; -webkit-appearance: none; appearance: none;}
+        .newsletter-message { overflow-wrap: anywhere; font-size: 0.85rem; line-height: 1.4; }
 
         .footer-bottom { margin-top: 4rem; text-align: center; color: #444; font-size: 0.8rem; border-top: 1px solid #222; padding-top: 2rem; position: relative; z-index: 1;}
 
         /* --- RESPONSIVE OPTIMIZATION --- */
         @media (max-width: 900px) {
+            html,
+            body {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
             header { padding: 1.5rem 1.25rem; }
             
             nav.desktop-nav { display: none; } 
             
+            .nav-actions {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 0.45rem;
+                max-width: 12rem;
+            }
+
             .menu-button { display: block; }
+            .theme-switcher {
+                order: 2;
+                margin-left: auto;
+                margin-top: 0.2rem;
+                gap: 0.25rem;
+                padding: 0.28rem;
+            }
+            .menu-button { order: 1; margin-left: auto; }
+            .theme-panel {
+                right: 0;
+                min-width: min(12.5rem, calc(100vw - 2.5rem));
+            }
             
             .hero { padding: 8rem 1.25rem 4rem 1.25rem; }
             
@@ -507,35 +1046,149 @@
                 letter-spacing: -0.5px; 
             }
 
+            .hero p {
+                font-size: 1rem;
+                padding-left: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .btn-group {
+                width: 100%;
+                gap: 0.75rem;
+                margin-bottom: 3rem;
+            }
+
             .section { padding: 4rem 1.25rem; }
-            .section-header { margin-bottom: 2.5rem; }
+            .section-header {
+                display: block;
+                margin-bottom: 2.5rem;
+            }
+
+            .section-header h2 {
+                font-size: clamp(1.8rem, 10vw, 3rem);
+                overflow-wrap: anywhere;
+            }
+
+            .section-header p {
+                margin-top: 1rem;
+            }
             
             .stats { flex-direction: column; gap: 2rem; border-top: 1px solid #333; padding-top: 2rem;}
+            .mission-control { grid-template-columns: 1fr; padding: 0 1.25rem 4rem; }
+            .mission-panel { min-height: auto; padding: 2rem 1.5rem; }
+            .mission-grid { grid-template-columns: 1fr; }
+            .mission-status { grid-template-columns: 1fr; }
+            .brand-console { grid-template-columns: 1fr; }
+            .brand-panel {
+                border-right: 0;
+                border-bottom: 1px solid var(--surface-line);
+                padding: 1.5rem;
+            }
+            .brand-signal { grid-template-columns: 1fr; }
+            .brand-marquee { padding: 1rem 0 1.25rem; }
+            .brand-card {
+                width: min(19rem, calc(100vw - 3.5rem));
+                min-height: 15rem;
+            }
             
             .services-grid { grid-template-columns: 1fr; }
             .case-studies { grid-template-columns: 1fr; }
-            .service-card { padding: 2rem 1.5rem; }
-            .footer { padding: 3rem 1.25rem; }
+            .service-card {
+                padding: 2rem 1.5rem;
+                min-width: 0;
+            }
+
+            .service-card div[style*="font-size: 2rem"],
+            .service-card div[style*="font-size: 1.8rem"] {
+                font-size: clamp(1.45rem, 8vw, 2rem) !important;
+                overflow-wrap: anywhere;
+            }
+
+            .service-card ul {
+                padding-left: 0;
+            }
+
+            .service-card ul li {
+                overflow-wrap: anywhere;
+            }
+
+            .case-study-card {
+                min-height: 360px;
+            }
+
+            .case-study-title {
+                font-size: clamp(1.5rem, 8vw, 2rem);
+            }
+
+            footer { padding: 3rem 1.25rem; }
+            .footer-links { grid-template-columns: 1fr; gap: 2rem; }
+            .newsletter { width: 100%; max-width: 100%; }
             
-            .btn-secondary { width: 100%; margin-bottom: 0.5rem; }
+            .btn-secondary,
+            .btn-primary,
+            .btn-view-all {
+                width: 100%;
+                max-width: 100%;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                text-align: center;
+                white-space: normal;
+            }
+
+            .btn-secondary { margin-bottom: 0.5rem; }
             
             #close-menu { font-size: 3rem; margin-top: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+                align-items: flex-start;
+            }
+
+            .logo-text {
+                font-size: 0.92rem;
+            }
+
+            .nav-actions {
+                max-width: 9.5rem;
+            }
+
+            .hero {
+                padding: 7rem 1rem 3rem;
+            }
+
+            .section,
+            footer {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .mission-control {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .mission-panel,
+            .mission-card,
+            .brand-panel,
+            .brand-card,
+            .service-card {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .footer-watermark {
+                font-size: clamp(3rem, 22vw, 7rem);
+            }
         }
     </style>
 </head>
 
-<body class="t-dark">
+<body class="t-dark" data-theme="dark">
     
     <div id="preloader">
-        <div class="loader-text">Habari yako!</div>
-        <div class="loader-track">
-            <div class="loader-bar" id="loader-bar"></div>
-        </div>
-        <div class="loader-info">
-            <div class="loader-pct" id="loader-pct">0%</div>
-            </div>
-
-        <button id="enter-btn">Karibu Elcinco Africa</button>
+        <h1 class="loader-title" aria-live="polite">habari yako!</h1>
     </div>
     <div class="ambient-light">
         <div class="orb orb-1"></div>
@@ -547,39 +1200,50 @@
             <div class="logo-text"><span style="color:#d8e70a">elcinco</span><span style="color:#fff">africa</span></div>
         </div>
         
-        <div style="display: flex; align-items: center;">
+        <div class="nav-actions">
             <nav class="desktop-nav">
-                <a href="/" class="active">Home</a>
-                <a href="/careers">Careers</a>
-                <a href="/about">About</a>
-                <a href="/contact">Contact</a>
+                <a href="index.html" class="active">Home</a>
+                <a href="pages/products.html">Products</a>
+                <a href="pages/careers.html">Careers</a>
+                <a href="pages/about.html">About</a>
+                <a href="pages/contact.html">Contact</a>
             </nav>
+            <div class="theme-switcher" aria-label="Theme palette">
+                <button class="theme-dot" type="button" data-theme-option="light" aria-label="Light theme"></button>
+                <button class="theme-dot" type="button" data-theme-option="dark" aria-label="Dark theme"></button>
+                <button class="theme-dot" type="button" data-theme-option="beige" aria-label="Beige theme"></button>
+                <button class="theme-dot" type="button" data-theme-option="burgundy" aria-label="Burgundy theme"></button>
+                <button class="theme-dot" type="button" data-theme-option="coffee" aria-label="Coffee theme"></button>
+                <button class="theme-dot" type="button" data-theme-option="orange" aria-label="Orange theme"></button>
+                <button class="theme-dot" type="button" data-theme-option="skyblue" aria-label="Skyblue theme"></button>
+            </div>
             <button class="menu-button" id="menu-toggle" aria-label="Open navigation menu">☰</button>
         </div>
     </header>
 
     <div class="mobile-nav-overlay" id="mobile-menu">
-        <a href="/" class="active">Home</a>
-        <a href="/careers">Careers</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
+        <a href="index.html" class="active">Home</a>
+        <a href="pages/products.html">Products</a>
+        <a href="pages/careers.html">Careers</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/contact.html">Contact</a>
         <button class="menu-button" style="color: var(--accent); margin-top: 3rem;" id="close-menu">✕</button>
     </div>
 
     <main>
         <section class="hero" aria-label="Digital Agency Hero">
             <div class="hero-content-wrapper">
-                <h1>Creative Department For The <span class="highlight">New Africa</span></h1>
-                <p>We are a collective of Kenyan creatives, designers, developers, and strategists building world-class digital experiences for futuristic African brands. From Nairobi to Lagos, Johannesburg to Cairo, we partner with businesses seeking impact, growth, and relevance not just a digital presence.</p>
+                <h1><span data-typewriter="Creative Department For The" data-typewriter-delay="150">Creative Department For The</span><span class="highlight" data-typewriter="New Africa" data-typewriter-delay="1200">New Africa</span></h1>
+                <p data-typewriter="We are a collective of Kenyan creatives, designers, developers and strategists building world-class digital experiences for futuristic African brands. From Nairobi to Lagos, Johannesburg to Cairo, we partner with businesses seeking impact, growth and relevance not just a digital presence." data-typewriter-delay="1900" data-typewriter-speed="18">We are a collective of Kenyan creatives, designers, developers and strategists building world-class digital experiences for futuristic African brands. From Nairobi to Lagos, Johannesburg to Cairo, we partner with businesses seeking impact, growth and relevance not just a digital presence.</p>
                 
                 <div class="btn-group">
-                    <a href="/project" class="btn-secondary" aria-label="Start Project">Start Project →</a>
-                    <a href="/contact" class="btn-secondary" style="border-color: #333; color: #aaa;" aria-label="Get Quote">Get Quote</a>
+                    <a href="pages/project.html" class="btn-secondary" aria-label="Start Project">Start Project →</a>
+                    <a href="pages/contact.html" class="btn-secondary" style="border-color: #333; color: #aaa;" aria-label="Get Quote">Get Quote</a>
                 </div>
 
                 <div class="stats" role="list">
                     <div class="stat" role="listitem">
-                        <div class="number">2+</div>
+                        <div class="number">5+</div>
                         <div class="label">Projects Delivered</div>
                     </div>
                     <div class="stat" role="listitem">
@@ -598,6 +1262,204 @@
             </div>
         </section>
 
+        <section class="mission-control" aria-label="Elcinco delivery control system">
+            <div class="mission-panel">
+                <div>
+                    <div class="mission-eyebrow">Mission Control</div>
+                    <h2 data-scroll-reveal>From idea to verified launch.</h2>
+                </div>
+                <div class="mission-status" aria-label="Delivery status">
+                    <span>Mode<strong>Build</strong></span>
+                    <span>Signal<strong>Clear</strong></span>
+                    <span>Output<strong>Proof</strong></span>
+                </div>
+            </div>
+            <div class="mission-grid">
+                <article class="mission-card">
+                    <small>Trust</small>
+                    <h3>Visible Work</h3>
+                    <p>Every project moves with transparent checkpoints, launch artifacts and decisions your team can verify.</p>
+                </article>
+                <article class="mission-card">
+                    <small>Autonomy</small>
+                    <h3>Focused Execution</h3>
+                    <p>We take ownership of the moving parts: interface, copy, systems, deployment and post-launch refinement.</p>
+                </article>
+                <article class="mission-card">
+                    <small>Feedback</small>
+                    <h3>Fast Loops</h3>
+                    <p>Short review cycles keep momentum high while preserving the craft and strategic edge of the build.</p>
+                </article>
+                <article class="mission-card">
+                    <small>Learning</small>
+                    <h3>Compound Context</h3>
+                    <p>Your brand, audience and operational patterns become reusable intelligence for future releases.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section brand-showcase" aria-labelledby="brand-showcase-title">
+            <div class="section-header">
+                <small>BRAND SYSTEMS</small>
+                <h2 id="brand-showcase-title">Premium Brand <span class="highlight">Showcase</span></h2>
+                <p>A focused view of the brand experiences Elcinco Africa builds: clear positioning, polished interfaces and launch-ready digital systems.</p>
+            </div>
+
+            <div class="brand-console" aria-label="Scrolling brand showcase">
+                <ol class="sr-only">
+                    <li>RN Lilly Cares, organisation website.</li>
+                    <li>Gallatekea, corporate platform.</li>
+                    <li>Automation Brands, workflow automation systems.</li>
+                    <li>Market Ready Startups, startup systems.</li>
+                    <li>Product Interfaces, UI systems.</li>
+                    <li>Digital Stores, commerce experiences.</li>
+                    <li>Personal Brands, authority platforms.</li>
+                    <li>Enterprise Teams, enterprise digital systems.</li>
+                </ol>
+                <aside class="brand-panel">
+                    <small>Live Portfolio </small>
+                    <h3>Brands built to be understood fast.</h3>
+                    <div class="brand-signal" aria-label="Brand delivery signals">
+                    </div>
+                </aside>
+
+                <div class="brand-marquee">
+                    <div class="brand-track" aria-hidden="true">
+                        <article class="brand-card">
+                            <div>
+                                <small>01 / Care</small>
+                                <h4>RN Lilly Cares</h4>
+                            </div>
+                            <div class="brand-card-foot"><span>Organisation Website</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>02 / Security</small>
+                                <h4>Gallatekea</h4>
+                                <p>A corporate digital presence for security solutions with confident structure, service clarity and conversion-focused contact routes.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Corporate Platform</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>03 / Workflow Ops</small>
+                                <h4>Automation Brands</h4>
+                                <p>Smart workflow identities for teams that need helpful assistants, response systems, lead capture and operational dashboards.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Workflow Automation</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>04 / Growth</small>
+                                <h4>Market Ready Startups</h4>
+                                <p>Launch systems for founders who need brand positioning, web presence, campaigns, analytics and investor-ready storytelling.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Startup Systems</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>01 / Care</small>
+                                <h4>RN Lilly Cares</h4>
+                                <p>A compassionate care platform shaped around trust, clarity, donation pathways and accessible community information.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Organisation Website</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>02 / Security</small>
+                                <h4>Gallatekea</h4>
+                                <p>A corporate digital presence for security solutions with confident structure, service clarity and conversion-focused contact routes.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Corporate Platform</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>03 / Workflow Ops</small>
+                                <h4>Automation Brands</h4>
+                                <p>Smart workflow identities for teams that need helpful assistants, response systems, lead capture and operational dashboards.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Workflow Automation</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>04 / Growth</small>
+                                <h4>Market Ready Startups</h4>
+                                <p>Launch systems for founders who need brand positioning, web presence, campaigns, analytics and investor-ready storytelling.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Startup Systems</span><i></i></div>
+                        </article>
+                    </div>
+
+                    <div class="brand-track" aria-hidden="true">
+                        <article class="brand-card">
+                            <div>
+                                <small>05 / Experience</small>
+                                <h4>Product Interfaces</h4>
+                                <p>Premium UI systems for SaaS, internal tools, dashboards and customer portals that need dense information to feel calm.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>UI Systems</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>06 / Commerce</small>
+                                <h4>Digital Stores</h4>
+                                <p>Retail-ready experiences designed for product discovery, clean checkout journeys, campaign landing pages and repeat engagement.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Commerce</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>07 / Presence</small>
+                                <h4>Personal Brands</h4>
+                                <p>Sharp digital identities for experts, creators, consultants and leaders who need credibility before the first conversation.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Authority</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>08 / Scale</small>
+                                <h4>Enterprise Teams</h4>
+                                <p>Structured platforms for teams that need compliance-aware content, reusable components, internal alignment and measurable growth.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Enterprise</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>05 / Experience</small>
+                                <h4>Product Interfaces</h4>
+                                <p>Premium UI systems for SaaS, internal tools, dashboards and customer portals that need dense information to feel calm.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>UI Systems</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>06 / Commerce</small>
+                                <h4>Digital Stores</h4>
+                                <p>Retail-ready experiences designed for product discovery, clean checkout journeys, campaign landing pages and repeat engagement.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Commerce</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>07 / Presence</small>
+                                <h4>Personal Brands</h4>
+                                <p>Sharp digital identities for experts, creators, consultants and leaders who need credibility before the first conversation.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Authority</span><i></i></div>
+                        </article>
+                        <article class="brand-card">
+                            <div>
+                                <small>08 / Scale</small>
+                                <h4>Enterprise Teams</h4>
+                                <p>Structured platforms for teams that need compliance-aware content, reusable components, internal alignment and measurable growth.</p>
+                            </div>
+                            <div class="brand-card-foot"><span>Enterprise</span><i></i></div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section" aria-labelledby="services-title">
             <div class="section-header">
                 <small>CAPABILITIES</small>
@@ -608,37 +1470,37 @@
 
             <div class="services-grid">
                 
-                <a href="/aiauto" class="service-card" tabindex="0">
-                    <h3 class="service-title">AI Automation</h3>
-                    <p class="service-desc">Automating business workflows using AI to save time, reduce costs, and improve efficiency.</p>
+                <a href="pages/aiauto.html" class="service-card" tabindex="0">
+                    <h3 class="service-title">Workflow Automation</h3>
+                    <p class="service-desc">Practical business systems that save time, reduce repetitive work and keep teams moving faster.</p>
                     <div class="tags"><span class="tag">Chatbots</span><span class="tag">Workflows</span></div>
                 </a>
 
-                <a href="/webdev" class="service-card" tabindex="0">
+                <a href="pages/webdev.html" class="service-card" tabindex="0">
                     <h3 class="service-title">Web Development</h3>
-                    <p class="service-desc">High-performance websites and web apps built with modern tech. Fast, secure, and scalable.</p>
+                    <p class="service-desc">High-performance websites and web apps built with modern tech. Fast, secure and scalable.</p>
                     <div class="tags"><span class="tag">React</span><span class="tag">Next.js</span></div>
                 </a>
 
-                <a href="/mobile" class="service-card" tabindex="0">
+                <a href="pages/mobile.html" class="service-card" tabindex="0">
                     <h3 class="service-title">Mobile Apps</h3>
                     <p class="service-desc">Native and cross-platform apps that solve real African problems. Built for scale.</p>
                     <div class="tags"><span class="tag">iOS</span><span class="tag">Android</span></div>
                 </a>
 
-                <a href="/digital" class="service-card" tabindex="0">
+                <a href="pages/digital.html" class="service-card" tabindex="0">
                     <h3 class="service-title">Digital Marketing</h3>
-                    <p class="service-desc">Data-driven campaigns that convert. SEO, social media, and performance marketing.</p>
+                    <p class="service-desc">Data-driven campaigns that convert. SEO, social media and performance marketing.</p>
                     <div class="tags"><span class="tag">SEO</span><span class="tag">Ads</span></div>
                 </a>
 
-                <a href="/uiux" class="service-card" tabindex="0">
+                <a href="pages/uiux.html" class="service-card" tabindex="0">
                     <h3 class="service-title">UI/UX Design</h3>
                     <p class="service-desc">User-centered design that delights. We create interfaces that users love and businesses trust.</p>
                     <div class="tags"><span class="tag">Research</span><span class="tag">Design Systems</span></div>
                 </a>
 
-                <a href="/growth" class="service-card" tabindex="0">
+                <a href="pages/growth.html" class="service-card" tabindex="0">
                     <h3 class="service-title">Growth Strategy</h3>
                     <p class="service-desc">Strategic consulting for startups and enterprises. From MVP to market leader.</p>
                     <div class="tags"><span class="tag">Consulting</span><span class="tag">Optimization</span></div>
@@ -650,272 +1512,40 @@
             <div class="section-header" style="padding: 6rem 1.25rem 2rem 1.25rem;">
                 <small>CASE STUDIES</small>
                 <h2 id="case-studies-title">Work That <span class="highlight">Speaks</span></h2>
-                <a href="#case-studies-title" class="btn-view-all">View All Work →</a>
+                <a href="pages/products.html" class="btn-view-all">View All Work →</a>
             </div>
             <div class="case-studies">
                 <article class="case-study-card" tabindex="0">
-                    <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" alt="Care Giving" class="case-study-image" />
+                    <div class="case-study-media">
+                        <img src="public/images/products/lukumjiini.png" alt="Elcinco Launchsite preview" />
+                    </div>
                     <div class="case-study-content">
-                        <div class="case-study-category">Organisation Website</div>
-                        <h3 class="case-study-title">Care Giving</h3>
-                        <a href="https://rnlillycares.org" target="_blank" rel="noopener noreferrer" class="case-study-link">View Case Study →</a>
+                        <div class="case-study-category">website</div>
+                        <h3 class="case-study-title">Lukumjini</h3>
+
+                        <a href="pages/project.html" class="case-study-link">View Case Study →</a>
                     </div>
                 </article>
 
                 <article class="case-study-card" tabindex="0">
-                    <img src="https://images.unsplash.com/photo-1496368077930-c1e31b4e5b44?w=800&q=80" alt="Security Solutions" class="case-study-image" />
+                    <div class="case-study-media">
+                        <img src="public/images/products/pod2.png" alt="Elcinco Command Desk preview" />
+                    </div>
                     <div class="case-study-content">
-                        <div class="case-study-category">Corporate Platform</div>
-                        <h3 class="case-study-title">Security Solutions</h3>
-                        <a href="https://gallatekea.com" target="_blank" rel="noopener noreferrer" class="case-study-link">View Case Study →</a>
+                        <div class="case-study-category">Operations</div>
+                        <h3 class="case-study-title">Pinpoint Queue Card</h3>
+                        <a href="pages/project.html" class="case-study-link">View Case Study →</a>
                     </div>
                 </article>
             </div>
-        </section>
 
-        <section class="section" aria-labelledby="pricing-title">
-            <div class="section-header">
-                <small> WEB</small>
-                <h2 id="pricing-title">Web <span class="highlight">Development</span></h2>
-            </div>
-            <div class="services-grid">
-                
-                <div class="service-card">
-                    <div style="position:absolute; top:20px; right:20px; font-size:0.7rem; color:#666;">ENTRY</div>
-                    <h3 class="service-title" style="color:var(--text-muted) !important;">Bronze</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 40,000</div>
-                    <p class="service-desc">Starter Website for Personal Brands</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>1–3 Page Responsive Site</li>
-                        <li><span>✓</span>Mobile & Desktop Optimization</li>
-                        <li><span>✓</span>Basic SEO Setup</li>
-                        <li><span>✓</span>1 Round Revisions</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-
-                <div class="service-card">
-                    <div style="position:absolute; top:20px; right:20px; font-size:0.7rem; color:var(--accent);">POPULAR</div>
-                    <h3 class="service-title" style="color:var(--accent) !important;">Silver</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 60,000</div>
-                    <p class="service-desc">Business Website for Service Providers</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>Up to 5 Pages</li>
-                        <li><span>✓</span>Contact & WhatsApp Chat</li>
-                        <li><span>✓</span>Google Maps & Basic SEO</li>
-                        <li><span>✓</span>2 Rounds Revisions</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;"> Get Started</a>
-                </div>
-
-                <div class="service-card">
-                    <div style="position:absolute; top:20px; right:20px; font-size:0.7rem; color:#666;">PRO</div>
-                    <h3 class="service-title" style="color:var(--text-muted) !important;">Gold</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 90,000</div>
-                    <p class="service-desc">Professional Platform for Companies</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>8–10 Pages + Blog</li>
-                        <li><span>✓</span>Analytics Integration</li>
-                        <li><span>✓</span>Performance Optimization</li>
-                        <li><span>✓</span>3 Rounds Revisions</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" aria-labelledby="pricing-title-2">
-            <div class="section-header">
-                <small> GROWTH</small>
-                <h2 id="pricing-title-2">Digital <span class="highlight">Marketing</span></h2>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <h3 class="service-title" style="color:var(--text-muted) !important;">Bronze</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 15K <span style="font-size:1rem; color:#666;">/mo</span></div>
-                    <p class="service-desc">Basic Presence</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>1 Platform Managed</li>
-                        <li><span>✓</span>6 Posts/Month</li>
-                        <li><span>✓</span>Caption Writing</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Subscribe</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title" style="color:var(--text-muted) !important;">Silver</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 25K <span style="font-size:1rem; color:#666;">/mo</span></div>
-                    <p class="service-desc">Growth Package</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>2 Platforms Managed</li>
-                        <li><span>✓</span>10 Posts/Month</li>
-                        <li><span>✓</span>Engagement Monitoring</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Subscribe</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title" style="color:var(--text-muted) !important;">Gold</h3>
-                    <div style="font-size: 2rem; font-weight: 700; color: #fff;">KES 45K <span style="font-size:1rem; color:#666;">/mo</span></div>
-                    <p class="service-desc">Brand Growth</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>4 Platforms Managed</li>
-                        <li><span>✓</span>15 Posts/Month</li>
-                        <li><span>✓</span>Paid Ads Strategy</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Subscribe</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" aria-labelledby="pricing-title-3">
-            <div class="section-header">
-                <small> INTERFACE</small>
-                <h2 id="pricing-title-3">UI/UX <span class="highlight">Design</span></h2>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <h3 class="service-title">Bronze</h3>
-                    <div style="font-size: 2rem; color: #fff;">KES 20K</div>
-                    <p class="service-desc">Concept Design</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>User Flow Planning</li>
-                        <li><span>✓</span>Low-fi Wireframes</li>
-                        <li><span>✓</span>3-5 Screens</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title">Silver</h3>
-                    <div style="font-size: 2rem; color: #fff;">KES 45K</div>
-                    <p class="service-desc">Product Design</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>High-Fidelity UI</li>
-                        <li><span>✓</span>6-10 Screens</li>
-                        <li><span>✓</span>Clickable Prototype</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title">Gold</h3>
-                    <div style="font-size: 2rem; color: #fff;">KES 60K</div>
-                    <p class="service-desc">Complete System</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>Full Design System</li>
-                        <li><span>✓</span>12-15 Screens</li>
-                        <li><span>✓</span>Dev Handoff Assets</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" aria-labelledby="pricing-title-4">
-            <div class="section-header">
-                <small>AUTOMATION</small>
-                <h2 id="pricing-title-4">AI <span class="highlight">Automation</span></h2>
-            </div>
-
-            
-            <div class="services-grid">
-                <div class="service-card">
-                    <h3 class="service-title">Bronze</h3>
-                    <div style="font-size: 1.8rem; color: #fff;">KES 20-30K</div>
-                    <p class="service-desc">Basic Automation</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>1 Simple Workflow</li>
-                        <li><span>✓</span>Basic Chatbot</li>
-                        <li><span>✓</span>WhatsApp Integration</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title">Silver</h3>
-                    <div style="font-size: 1.8rem; color: #fff;">KES 45-60K</div>
-                    <p class="service-desc">Smart Automation</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>3 Automated Workflows</li>
-                        <li><span>✓</span>CRM Integration</li>
-                        <li><span>✓</span>Lead Qualification</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title">Gold</h3>
-                    <div style="font-size: 1.8rem; color: #fff;">KES 120-180K</div>
-                    <p class="service-desc">Advanced Automation</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>5+ Workflows</li>
-                        <li><span>✓</span>Trained AI Chatbot</li>
-                        <li><span>✓</span>Decision Logic & Routing</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" aria-labelledby="pricing-title-5">
-            <div class="section-header">
-                <small> MOBILE</small>
-                <h2 id="pricing-title-5">Mobile <span class="highlight">Application</span></h2>
-            </div>
-
-
-            <div class="services-grid">
-                <div class="service-card">
-                    <h3 class="service-title">Bronze</h3>
-                    <div style="font-size: 2rem; color: #fff;">KES 70K</div>
-                    <p class="service-desc">Simple App</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>Android Only</li>
-                        <li><span>✓</span>Basic UI Screens</li>
-                        <li><span>✓</span>Simple Logic</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title">Silver</h3>
-                    <div style="font-size: 2rem; color: #fff;">KES 100K</div>
-                    <p class="service-desc">Functional App</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>User Authentication</li>
-                        <li><span>✓</span>API Integration</li>
-                        <li><span>✓</span>Push Notifications</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-                <div class="service-card">
-                    <h3 class="service-title">Gold</h3>
-                    <div style="font-size: 2rem; color: #fff;">KES 140K</div>
-                    <p class="service-desc">Advanced App</p>
-                    <hr>
-                    <ul>
-                        <li><span>✓</span>Payments Integration</li>
-                        <li><span>✓</span>Admin Dashboard</li>
-                        <li><span>✓</span>Full Testing</li>
-                    </ul>
-                    <a href="/project" class="btn-primary" style="background:transparent; border:1px solid #fff; color:#fff;">Get Started</a>
-                </div>
-            </div>
         </section>
 
         <section class="section" style="text-align:center; padding: 8rem 2rem; border-bottom: none;">
             <div style="font-family: var(--font-display); color: var(--accent); font-size: 1rem; margin-bottom: 1rem;">INITIATE PROJECT</div>
             <h2 style="font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 2rem; color: #fff;">Ready to <span class="highlight">Transform?</span></h2>
             <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem auto;">Whether you’re a startup founder, an enterprise, or an ambitious brand  we’re here to make your digital dreams a reality.</p>
-            <a href="/project" class="btn-secondary" style="background: var(--accent); color: #000; border-color: var(--accent);">Get Started With Us Today </a>
+            <a href="pages/project.html" class="btn-secondary" style="background: var(--accent); color: #000; border-color: var(--accent);">Get Started With Us Today </a>
         </section>
 
     </main>
@@ -931,10 +1561,11 @@
                 <div>
                     <h4> Website links</h4>
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                        <li><a href="/about">About</a></li>
-                        <li><a href="/careers">Careers</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pages/products.html">Our Products</a></li>
+                        <li><a href="pages/contact.html">Contact</a></li>
+                        <li><a href="pages/about.html">About</a></li>
+                        <li><a href="pages/careers.html">Careers</a></li>
                     </ul>
                 </div>
                 <div>
@@ -973,6 +1604,7 @@
     <script src="src/scripts/deobfuscate.js"></script>
     <!-- Load Email Service -->
     <script src="src/scripts/emailService.js"></script>
+    <script src="src/scripts/siteEffects.js"></script>
 
     <script>
         /**
@@ -990,64 +1622,71 @@
 
         // --- PRELOADER LOGIC ---
         const preloader = document.getElementById('preloader');
-        const loaderBar = document.getElementById('loader-bar');
-        const loaderPct = document.getElementById('loader-pct');
-        const enterBtn = document.getElementById('enter-btn');
         const body = document.body;
+        const themeDots = document.querySelectorAll('.theme-dot');
 
-        // Check Session Storage: Has user seen loader this session?
-        const hasVisited = sessionStorage.getItem('elcinco_visited');
+        function applyTheme(theme) {
+            const selectedTheme = theme || 'dark';
+            body.setAttribute('data-theme', selectedTheme);
+            localStorage.setItem('elcinco_theme', selectedTheme);
 
-        if (hasVisited) {
-            // SKIP LOADER
-            preloader.style.display = 'none';
-            body.classList.add('loaded');
-        } else {
-            // RUN LOADER
-            let loadProgress = 0;
-            const loadInterval = setInterval(() => {
-                // Increment cleanly to 100
-                loadProgress += 2; 
-                
-                if (loadProgress >= 100) {
-                    loadProgress = 100;
-                    clearInterval(loadInterval);
-                    
-                    // Show "Karibu" Button when done
-                    enterBtn.style.display = 'block';
-                    // Small delay for CSS transition
-                    setTimeout(() => {
-                        enterBtn.style.opacity = '1';
-                        enterBtn.style.transform = 'translateY(0)';
-                    }, 50);
-                }
-
-                loaderBar.style.width = loadProgress + '%';
-                loaderPct.innerText = loadProgress + '%';
-            }, 30); // Speed of loading
+            themeDots.forEach(dot => {
+                const isActive = dot.dataset.themeOption === selectedTheme;
+                dot.classList.toggle('active', isActive);
+                dot.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
         }
 
-        // Enter Site Logic
-        enterBtn.addEventListener('click', () => {
-            // 1. Mark as visited in SessionStorage
-            sessionStorage.setItem('elcinco_visited', 'true');
+        // Preserve manual override if set; otherwise allow auto selection handled by siteEffects
+        if (localStorage.getItem('elcinco_theme_manual') === 'true') {
+            applyTheme(localStorage.getItem('elcinco_theme') || 'dark');
+        } else {
+            // if no manual selection, prefer stored value or leave to siteEffects auto picker
+            applyTheme(localStorage.getItem('elcinco_theme') || 'dark');
+        }
 
-            // 2. Play Welcome Haptic
-            if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
-
-            // 3. Fade out preloader & Unlock scroll
-            preloader.style.opacity = '0';
-            setTimeout(() => {
-                preloader.style.display = 'none';
-                body.classList.add('loaded'); // Unlocks scroll via CSS
-            }, 800);
+        themeDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                localStorage.setItem('elcinco_theme_manual', 'true');
+                applyTheme(dot.dataset.themeOption);
+                const switcher = dot.closest('.theme-switcher, .elcinco-theme-dock');
+                const button = switcher ? switcher.querySelector('.theme-settings-btn') : null;
+                if (switcher) switcher.classList.remove('is-open');
+                if (button) {
+                    button.setAttribute('aria-expanded', 'false');
+                    button.setAttribute('aria-label', 'Open color settings');
+                }
+                HapticEngine.playClick();
+            });
         });
+
+        function unlockSite() {
+            if (preloader) preloader.style.display = 'none';
+            body.classList.add('loaded');
+        }
+
+        if (localStorage.getItem('elcinco_visited') === 'true') {
+            unlockSite();
+        } else {
+            setTimeout(() => {
+                localStorage.setItem('elcinco_visited', 'true');
+                if (!preloader) {
+                    unlockSite();
+                    return;
+                }
+                preloader.style.opacity = '0';
+                preloader.style.transform = 'scale(1.04)';
+                setTimeout(() => {
+                    unlockSite();
+                }, 900);
+            }, 1200);
+        }
 
         // --- INTERACTION HANDLERS ---
         
         // 1. Element Interactions - HAPTICS ON BUTTONS ONLY
         // Selector targets <button> tags and specific button classes
-        const buttonElements = document.querySelectorAll('button, .btn-primary, .btn-secondary, #enter-btn');
+        const buttonElements = document.querySelectorAll('button, .btn-primary, .btn-secondary');
         
         buttonElements.forEach(el => {
             el.addEventListener('click', () => HapticEngine.playClick());

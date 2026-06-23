@@ -13,6 +13,12 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://elcinco.africa/products</loc>
+        <lastmod>2026-05-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://elcinco.africa/contact</loc>
         <lastmod>2026-03-11</lastmod>
         <changefreq>monthly</changefreq>
@@ -79,4 +85,3 @@
         <priority>0.3</priority>
     </url>
 </urlset>
-

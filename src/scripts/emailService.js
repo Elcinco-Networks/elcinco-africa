@@ -12,6 +12,15 @@ class EmailService {
         this._legalEmail = null;
     }
 
+    _fallbackEmail(key) {
+        const fallbackParts = {
+            ae: ['a','d','m','i','n','@','e','l','c','i','n','c','o','.','a','f','r','i','c','a'],
+            ce: ['c','a','r','e','e','r','s','@','e','l','c','i','n','c','o','.','a','f','r','i','c','a'],
+            le: ['l','e','g','a','l','@','e','l','c','i','n','c','o','.','a','f','r','i','c','a']
+        };
+        return fallbackParts[key] ? fallbackParts[key].join('') : '';
+    }
+
     /**
      * Lazily resolve email from deobfuscation engine.
      * Guarantees window.__ec is checked at call time, not constructor time.
@@ -21,8 +30,8 @@ class EmailService {
         if (window.__ec && window.__ec.e) {
             return window.__ec.e(key);
         }
-        console.warn('EmailService: engine (window.__ec) not available. Email functionality will not work. <script> must appear before any script that instantiates EmailService.');
-        return '';
+        console.warn('EmailService: engine (window.__ec) not available. Using fallback contact address.');
+        return this._fallbackEmail(key);
     }
 
     get adminEmail() {
@@ -137,8 +146,18 @@ class EmailService {
      * @private
      */
     _openMailto(to, subject, body) {
+        if (!to || !this.validateEmail(to)) {
+            this.showError('Email service could not find a valid recipient. Please contact us through LinkedIn or Instagram.');
+            return;
+        }
+
         const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.location.href = mailtoUrl;
+        const link = document.createElement('a');
+        link.href = mailtoUrl;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
     }
 
     /**
@@ -232,4 +251,4 @@ class EmailService {
 
 // Export singleton instance
 const emailService = new EmailService();
-
+window.emailService = emailService;
