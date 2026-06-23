@@ -40,6 +40,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
